@@ -5,72 +5,94 @@
 
 #include "ui.h"
 
-void controlChange1(lv_event_t * e)
+void controlChange1(lv_event_t *e)
 {
 	// Your code here
 }
 
-void controlChange2(lv_event_t * e)
+void controlChange2(lv_event_t *e)
 {
 	// Your code here
 }
 
-void controlChange3(lv_event_t * e)
+void controlChange3(lv_event_t *e)
 {
 	// Your code here
 }
 
-void controlChange4(lv_event_t * e)
+void controlChange4(lv_event_t *e)
 {
 	// Your code here
 }
 
-void controlChange5(lv_event_t * e)
+void controlChange5(lv_event_t *e)
 {
 	// Your code here
 }
 
-void controlChange6(lv_event_t * e)
+void controlChange6(lv_event_t *e)
 {
 	// Your code here
 }
 
-void playSong(lv_event_t * e)
+void playSong(lv_event_t *e)
 {
 	// Your code here
 }
 
-void prevSong(lv_event_t * e)
+void prevSong(lv_event_t *e)
 {
 	// Your code here
 }
 
-void nextSong(lv_event_t * e)
+void nextSong(lv_event_t *e)
 {
 	// Your code here
 }
 
-void decreaseTemp(lv_event_t * e)
+void decreaseTemp(lv_event_t *e)
 {
 	// Your code here
 }
 
-void increaseTemp(lv_event_t * e)
+void increaseTemp(lv_event_t *e)
 {
 	// Your code here
 }
 
-void lightAllOn(lv_event_t * e)
+void lightAllOn(lv_event_t *e)
 {
 	// Your code here
 }
 
-void lightAllOff(lv_event_t * e)
+void lightAllOff(lv_event_t *e)
 {
 	// Your code here
 }
 
-void curtainAllOn(lv_event_t * e)
+void curtainAllOn(lv_event_t *e)
 {
 	// Your code here
+}
+
+// 跳转屏幕函数
+void roomChange(lv_event_t *e)
+{
+	lv_obj_t *dropdown = lv_event_get_target(e);
+	uint32_t selected = lv_dropdown_get_selected(dropdown);
+
+	switch (selected)
+	{
+	case 0: // 客厅 - 跳转到Screen1
+		lv_screen_load(ui_Screen1);
+		break;
+	case 1: // 主卧 - 跳转到Screen2
+		lv_screen_load(ui_Screen2);
+		break;
+	case 2: // 次卧 - 跳转到Screen3
+		lv_screen_load(ui_Screen3);
+		break;
+	default:
+		break;
+	}
 }

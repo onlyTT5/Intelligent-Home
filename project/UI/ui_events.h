@@ -7,23 +7,25 @@
 #define _UI_EVENTS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-void controlChange1(lv_event_t * e);
-void controlChange2(lv_event_t * e);
-void controlChange3(lv_event_t * e);
-void controlChange4(lv_event_t * e);
-void controlChange5(lv_event_t * e);
-void controlChange6(lv_event_t * e);
-void playSong(lv_event_t * e);
-void prevSong(lv_event_t * e);
-void nextSong(lv_event_t * e);
-void decreaseTemp(lv_event_t * e);
-void increaseTemp(lv_event_t * e);
-void lightAllOn(lv_event_t * e);
-void lightAllOff(lv_event_t * e);
-void curtainAllOn(lv_event_t * e);
+    void controlChange1(lv_event_t *e);
+    void controlChange2(lv_event_t *e);
+    void controlChange3(lv_event_t *e);
+    void controlChange4(lv_event_t *e);
+    void controlChange5(lv_event_t *e);
+    void controlChange6(lv_event_t *e);
+    void playSong(lv_event_t *e);
+    void prevSong(lv_event_t *e);
+    void nextSong(lv_event_t *e);
+    void decreaseTemp(lv_event_t *e);
+    void increaseTemp(lv_event_t *e);
+    void lightAllOn(lv_event_t *e);
+    void lightAllOff(lv_event_t *e);
+    void curtainAllOn(lv_event_t *e);
+    void roomChange(lv_event_t *e);
 
 #ifdef __cplusplus
 } /*extern "C"*/
