@@ -25,6 +25,7 @@ extern "C"
     void lightAllOn(lv_event_t *e);
     void lightAllOff(lv_event_t *e);
     void curtainAllOn(lv_event_t *e);
+    void curtainAllOff(lv_event_t *e);
     void roomChange(lv_event_t *e);
 
 #ifdef __cplusplus

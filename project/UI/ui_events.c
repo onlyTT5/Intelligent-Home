@@ -7,32 +7,74 @@
 
 void controlChange1(lv_event_t *e)
 {
-	// Your code here
+	lv_event_code_t event_code = lv_event_get_code(e);
+	if (event_code == LV_EVENT_CLICKED)
+	{
+		lv_image_set_src(ui_lightOnImg, &light_on);
+		lv_image_set_src(ui_lightOffImg, &light_click);
+		lv_label_set_text(ui_lightSliderValue, "0%");
+		lv_slider_set_value(ui_lightSlider, 0, LV_ANIM_OFF);
+	}
 }
 
 void controlChange2(lv_event_t *e)
 {
-	// Your code here
+	lv_event_code_t event_code = lv_event_get_code(e);
+	if (event_code == LV_EVENT_CLICKED)
+	{
+		lv_image_set_src(ui_lightOnImg, &ui_img_920086830);
+		lv_image_set_src(ui_lightOffImg, &ui_img_light_png);
+		lv_label_set_text(ui_lightSliderValue, "10%");
+		lv_slider_set_value(ui_lightSlider, 10, LV_ANIM_OFF);
+	}
 }
 
 void controlChange3(lv_event_t *e)
 {
-	// Your code here
+	lv_event_code_t event_code = lv_event_get_code(e);
+	if (event_code == LV_EVENT_CLICKED)
+	{
+		lv_image_set_src(ui_lightOnImg, &ui_img_920086830);
+		lv_image_set_src(ui_lightOffImg, &ui_img_light_png);
+		lv_label_set_text(ui_lightSliderValue, "70%");
+		lv_slider_set_value(ui_lightSlider, 70, LV_ANIM_OFF);
+	}
 }
 
 void controlChange4(lv_event_t *e)
 {
-	// Your code here
+	lv_event_code_t event_code = lv_event_get_code(e);
+	if (event_code == LV_EVENT_CLICKED)
+	{
+		lv_image_set_src(ui_lightOnImg, &ui_img_920086830);
+		lv_image_set_src(ui_lightOffImg, &ui_img_light_png);
+		lv_label_set_text(ui_lightSliderValue, "10%");
+		lv_slider_set_value(ui_lightSlider, 10, LV_ANIM_OFF);
+	}
 }
 
 void controlChange5(lv_event_t *e)
 {
-	// Your code here
+	lv_event_code_t event_code = lv_event_get_code(e);
+	if (event_code == LV_EVENT_CLICKED)
+	{
+		lv_image_set_src(ui_lightOnImg, &ui_img_920086830);
+		lv_image_set_src(ui_lightOffImg, &ui_img_light_png);
+		lv_label_set_text(ui_lightSliderValue, "30%");
+		lv_slider_set_value(ui_lightSlider, 30, LV_ANIM_OFF);
+	}
 }
 
 void controlChange6(lv_event_t *e)
 {
-	// Your code here
+	lv_event_code_t event_code = lv_event_get_code(e);
+	if (event_code == LV_EVENT_CLICKED)
+	{
+		lv_image_set_src(ui_lightOnImg, &ui_img_920086830);
+		lv_image_set_src(ui_lightOffImg, &ui_img_light_png);
+		lv_label_set_text(ui_lightSliderValue, "80%");
+		lv_slider_set_value(ui_lightSlider, 80, LV_ANIM_OFF);
+	}
 }
 
 void playSong(lv_event_t *e)
@@ -50,29 +92,97 @@ void nextSong(lv_event_t *e)
 	// Your code here
 }
 
+// 减少温度事件
 void decreaseTemp(lv_event_t *e)
 {
-	// Your code here
+	// 获取温度标签文本
+	char *buf = lv_label_get_text(ui_airTemperature);
+	char *degree_sign = strstr(buf, "°C");
+	// 转换为整数
+	int temp = atoi(buf);
+	if (temp > 16) // 假设温度范围为16°C到30°C
+		temp -= 1;
+	lv_event_code_t event_code = lv_event_get_code(e);
+	if (event_code == LV_EVENT_CLICKED)
+	{
+		// 设置新的温度文本
+		char new_temp[10];
+		sprintf(new_temp, "%d", temp);
+		lv_label_set_text(ui_airTemperature, new_temp);
+		if (degree_sign) {
+			lv_label_set_text(ui_airTemperature, strcat(new_temp, "°C"));
+			lv_label_set_text(ui_temperatureText, new_temp);
+			// ui_temperatureText
+		}
+	}
 }
 
 void increaseTemp(lv_event_t *e)
 {
-	// Your code here
+	// 获取温度标签文本
+	char *buf = lv_label_get_text(ui_airTemperature);
+	char *degree_sign = strstr(buf, "°C");
+	// 转换为整数
+	int temp = atoi(buf);
+	if (temp < 30)
+		temp += 1;
+	lv_event_code_t event_code = lv_event_get_code(e);
+	if (event_code == LV_EVENT_CLICKED)
+	{
+		// 设置新的温度文本
+		char new_temp[10];
+		sprintf(new_temp, "%d", temp);
+		lv_label_set_text(ui_airTemperature, new_temp);
+		if (degree_sign) {
+			lv_label_set_text(ui_airTemperature, strcat(new_temp, "°C"));
+			lv_label_set_text(ui_temperatureText, new_temp);
+		}
+	}
 }
 
+// 灯全开全关事件
 void lightAllOn(lv_event_t *e)
 {
-	// Your code here
+	lv_event_code_t event_code = lv_event_get_code(e);
+	if (event_code == LV_EVENT_CLICKED)
+	{
+		lv_image_set_src(ui_lightOnImg, &ui_img_920086830);
+		lv_image_set_src(ui_lightOffImg, &ui_img_light_png);
+		lv_label_set_text(ui_lightSliderValue, "50%");
+		lv_slider_set_value(ui_lightSlider, 50, LV_ANIM_OFF);
+	}
 }
 
 void lightAllOff(lv_event_t *e)
 {
-	// Your code here
+	lv_event_code_t event_code = lv_event_get_code(e);
+	if (event_code == LV_EVENT_CLICKED)
+	{
+		lv_image_set_src(ui_lightOnImg, &light_on);
+		lv_image_set_src(ui_lightOffImg, &light_click);
+		lv_label_set_text(ui_lightSliderValue, "0%");
+		lv_slider_set_value(ui_lightSlider, 0, LV_ANIM_OFF);
+	}
 }
 
 void curtainAllOn(lv_event_t *e)
 {
-	// Your code here
+	lv_event_code_t event_code = lv_event_get_code(e);
+	if (event_code == LV_EVENT_CLICKED)
+	{
+		lv_image_set_src(ui_curtainOnImg, &ui_img_1611275694);
+		lv_image_set_src(ui_curtainOffImg, &ui_img_1850939063);
+	}
+}
+
+void curtainAllOff(lv_event_t *e)
+{
+	lv_event_code_t event_code = lv_event_get_code(e);
+	if (event_code == LV_EVENT_CLICKED)
+	{
+		lv_image_set_src(ui_curtainOnImg, &curtain);
+		lv_image_set_src(ui_curtainOffImg, &window_shade_click);
+	}
 }
 
 // 跳转屏幕函数

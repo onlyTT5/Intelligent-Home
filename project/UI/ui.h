@@ -55,6 +55,10 @@ LV_IMG_DECLARE(ui_img_920086830);    // assets/light-on-click.png
 LV_IMG_DECLARE(ui_img_light_png);    // assets/light.png
 LV_IMG_DECLARE(ui_img_1611275694);    // assets/curtain-click.png
 LV_IMG_DECLARE(ui_img_1850939063);    // assets/window-shade.png
+LV_IMG_DECLARE(light_click);    // assets/ChangeRoom.png
+LV_IMG_DECLARE(light_on);    // assets/ChangeRoom.png
+LV_IMG_DECLARE(window_shade_click);    // assets/ChangeRoom.png
+LV_IMG_DECLARE(curtain);    // assets/ChangeRoom.png
 
 // FONTS
 LV_FONT_DECLARE(ui_font_Date);

@@ -231,6 +231,7 @@ void ui_event_temperatureText(lv_event_t *e)
     }
 }
 
+// 灯全开灯全关事件
 void ui_event_lightOnImg(lv_event_t *e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
@@ -267,7 +268,7 @@ void ui_event_curtainOffImg(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        (e);
+        curtainAllOff(e);
     }
 }
 
