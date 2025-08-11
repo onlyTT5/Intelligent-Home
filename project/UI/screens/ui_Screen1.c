@@ -215,7 +215,7 @@ void ui_event_lower(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        decreaseTemp(e);
+        decreaseTemp(e, ui_airTemperature, ui_temperatureText);
     }
 }
 
@@ -225,7 +225,7 @@ void ui_event_increase(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        increaseTemp(e);
+        increaseTemp(e, ui_airTemperature, ui_temperatureText);
     }
 }
 
@@ -344,16 +344,8 @@ void ui_Screen1_screen_init(void)
         cJSON *live_item = cJSON_GetArrayItem(lives_array, i);
         if (live_item == NULL)
             continue;
-
-        // 获取各个天气字段
-        cJSON *province = cJSON_GetObjectItem(live_item, "province");
-        cJSON *city = cJSON_GetObjectItem(live_item, "city");
         weather = cJSON_GetObjectItem(live_item, "weather");
         temperature = cJSON_GetObjectItem(live_item, "temperature");
-        cJSON *winddirection = cJSON_GetObjectItem(live_item, "winddirection");
-        cJSON *windpower = cJSON_GetObjectItem(live_item, "windpower");
-        cJSON *humidity = cJSON_GetObjectItem(live_item, "humidity");
-        cJSON *reporttime = cJSON_GetObjectItem(live_item, "reporttime");
 
         // 保存天气和温度数据
         if (weather && cJSON_GetStringValue(weather))

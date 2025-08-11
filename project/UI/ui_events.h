@@ -23,8 +23,8 @@ extern "C"
     void playSong(lv_event_t *e);
     void prevSong(lv_event_t *e);
     void nextSong(lv_event_t *e);
-    void decreaseTemp(lv_event_t *e);
-    void increaseTemp(lv_event_t *e);
+    void decreaseTemp(lv_event_t *e, lv_obj_t *ui_airTemperature, lv_obj_t *ui_temperatureText);
+    void increaseTemp(lv_event_t *e, lv_obj_t *ui_airTemperature, lv_obj_t *ui_temperatureText);
     void lightAllOn(lv_event_t *e, lv_obj_t *lightOnImg, lv_obj_t *lightOffImg, lv_obj_t *lightSliderValue, lv_obj_t *lightSlider);
     void lightAllOff(lv_event_t *e, lv_obj_t *lightOnImg, lv_obj_t *lightOffImg, lv_obj_t *lightSliderValue, lv_obj_t *lightSlider);
     void curtainAllOn(lv_event_t *e, lv_obj_t *ui_curtainOnImg, lv_obj_t *ui_curtainOffImg);

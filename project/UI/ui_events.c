@@ -264,7 +264,7 @@ void nextSong(lv_event_t *e)
 }
 
 // 减少温度事件
-void decreaseTemp(lv_event_t *e)
+void decreaseTemp(lv_event_t *e, lv_obj_t *ui_airTemperature, lv_obj_t *ui_temperatureText)
 {
 	// 获取温度标签文本
 	char *buf = lv_label_get_text(ui_airTemperature);
@@ -289,7 +289,7 @@ void decreaseTemp(lv_event_t *e)
 	}
 }
 
-void increaseTemp(lv_event_t *e)
+void increaseTemp(lv_event_t *e, lv_obj_t *ui_airTemperature, lv_obj_t *ui_temperatureText)
 {
 	// 获取温度标签文本
 	char *buf = lv_label_get_text(ui_airTemperature);
