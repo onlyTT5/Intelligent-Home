@@ -14,12 +14,12 @@ extern "C"
 #endif
 
     void airOnOffText(lv_event_t *e);
-    void controlChange1(lv_event_t *e);
-    void controlChange2(lv_event_t *e);
-    void controlChange3(lv_event_t *e);
-    void controlChange4(lv_event_t *e);
-    void controlChange5(lv_event_t *e);
-    void controlChange6(lv_event_t *e);
+    void controlChange1(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider);
+    void controlChange2(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider);
+    void controlChange3(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider);
+    void controlChange4(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider);
+    void controlChange5(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider);
+    void controlChange6(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider);
     void playSong(lv_event_t *e);
     void prevSong(lv_event_t *e);
     void nextSong(lv_event_t *e);
@@ -27,8 +27,8 @@ extern "C"
     void increaseTemp(lv_event_t *e);
     void lightAllOn(lv_event_t *e, lv_obj_t *lightOnImg, lv_obj_t *lightOffImg, lv_obj_t *lightSliderValue, lv_obj_t *lightSlider);
     void lightAllOff(lv_event_t *e, lv_obj_t *lightOnImg, lv_obj_t *lightOffImg, lv_obj_t *lightSliderValue, lv_obj_t *lightSlider);
-    void curtainAllOn(lv_event_t *e);
-    void curtainAllOff(lv_event_t *e);
+    void curtainAllOn(lv_event_t *e, lv_obj_t *ui_curtainOnImg, lv_obj_t *ui_curtainOffImg);
+    void curtainAllOff(lv_event_t *e, lv_obj_t *ui_curtainOnImg, lv_obj_t *ui_curtainOffImg);
     void roomChange(lv_event_t *e);
 
 #ifdef __cplusplus

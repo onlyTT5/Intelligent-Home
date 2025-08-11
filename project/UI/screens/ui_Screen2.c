@@ -103,7 +103,7 @@ void ui_event_goHome1(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        controlChange1(e);
+        controlChange1(e, ui_lightOnImg1, ui_lightOffImg1, ui_lightSliderValue1, ui_lightSlider1);
     }
 }
 
@@ -113,7 +113,7 @@ void ui_event_gobed1(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        controlChange2(e);
+        controlChange2(e, ui_lightOnImg1, ui_lightOffImg1, ui_lightSliderValue1, ui_lightSlider1);
     }
 }
 
@@ -123,7 +123,7 @@ void ui_event_relex1(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        controlChange3(e);
+        controlChange3(e, ui_lightOnImg1, ui_lightOffImg1, ui_lightSliderValue1, ui_lightSlider1);
     }
 }
 
@@ -133,7 +133,7 @@ void ui_event_getUp1(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        controlChange4(e);
+        controlChange4(e, ui_lightOnImg1, ui_lightOffImg1, ui_lightSliderValue1, ui_lightSlider1);
     }
 }
 
@@ -143,7 +143,7 @@ void ui_event_cinema1(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        controlChange5(e);
+        controlChange5(e, ui_lightOnImg1, ui_lightOffImg1, ui_lightSliderValue1, ui_lightSlider1);
     }
 }
 
@@ -153,7 +153,7 @@ void ui_event_goOut1(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        controlChange6(e);
+        controlChange6(e, ui_lightOnImg1, ui_lightOffImg1, ui_lightSliderValue1, ui_lightSlider1);
     }
 }
 
@@ -255,7 +255,7 @@ void ui_event_curtainOnImg1(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        curtainAllOn(e);
+        curtainAllOn(e, ui_curtainOnImg1, ui_curtainOffImg1);
     }
 }
 
@@ -265,7 +265,7 @@ void ui_event_curtainOffImg1(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        (e);
+        curtainAllOff(e, ui_curtainOnImg1, ui_curtainOffImg1);
     }
 }
 

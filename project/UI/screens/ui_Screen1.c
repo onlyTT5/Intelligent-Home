@@ -114,7 +114,7 @@ void ui_event_goHome(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        controlChange1(e);
+        controlChange1(e, ui_lightOnImg, ui_lightOffImg, ui_lightSliderValue, ui_lightSlider);
     }
 }
 
@@ -124,7 +124,7 @@ void ui_event_gobed(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        controlChange2(e);
+        controlChange2(e, ui_lightOnImg, ui_lightOffImg, ui_lightSliderValue, ui_lightSlider);
     }
 }
 
@@ -134,7 +134,7 @@ void ui_event_relex(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        controlChange3(e);
+        controlChange3(e, ui_lightOnImg, ui_lightOffImg, ui_lightSliderValue, ui_lightSlider);
     }
 }
 
@@ -144,7 +144,7 @@ void ui_event_getUp(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        controlChange4(e);
+        controlChange4(e, ui_lightOnImg, ui_lightOffImg, ui_lightSliderValue, ui_lightSlider);
     }
 }
 
@@ -154,7 +154,7 @@ void ui_event_cinema(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        controlChange5(e);
+        controlChange5(e, ui_lightOnImg, ui_lightOffImg, ui_lightSliderValue, ui_lightSlider);
     }
 }
 
@@ -164,7 +164,7 @@ void ui_event_goOut(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        controlChange6(e);
+        controlChange6(e, ui_lightOnImg, ui_lightOffImg, ui_lightSliderValue, ui_lightSlider);
     }
 }
 
@@ -267,7 +267,7 @@ void ui_event_curtainOnImg(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        curtainAllOn(e);
+        curtainAllOn(e, ui_curtainOnImg, ui_curtainOffImg);
     }
 }
 
@@ -277,7 +277,7 @@ void ui_event_curtainOffImg(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        curtainAllOff(e);
+        curtainAllOff(e, ui_curtainOnImg, ui_curtainOffImg);
     }
 }
 
