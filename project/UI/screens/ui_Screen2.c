@@ -235,7 +235,7 @@ void ui_event_lightOnImg1(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        lightAllOn(e);
+        lightAllOn(e, ui_lightOnImg1, ui_lightOffImg1, ui_lightSliderValue1, ui_lightSlider1);
     }
 }
 
@@ -245,7 +245,7 @@ void ui_event_lightOffImg1(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        lightAllOff(e);
+        lightAllOff(e, ui_lightOnImg1, ui_lightOffImg1, ui_lightSliderValue1, ui_lightSlider1);
     }
 }
 

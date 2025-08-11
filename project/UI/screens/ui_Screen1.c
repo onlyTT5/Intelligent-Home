@@ -247,7 +247,7 @@ void ui_event_lightOnImg(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        lightAllOn(e);
+        lightAllOn(e, ui_lightOnImg, ui_lightOffImg, ui_lightSliderValue, ui_lightSlider);
     }
 }
 
@@ -257,7 +257,7 @@ void ui_event_lightOffImg(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        lightAllOff(e);
+        lightAllOff(e, ui_lightOnImg, ui_lightOffImg, ui_lightSliderValue, ui_lightSlider);
     }
 }
 
@@ -524,6 +524,9 @@ void ui_Screen1_screen_init(void)
         lv_image_set_src(ui_weatherIcon, &heavy_rain);
     else if (strcmp(weather_str, "多云") == 0)
         lv_image_set_src(ui_weatherIcon, &cloudy);
+    else if (strcmp(weather_str, "阴") == 0)
+        lv_image_set_src(ui_weatherIcon, &cloud);
+    else
     lv_obj_set_width(ui_weatherIcon, LV_SIZE_CONTENT);  /// 1
     lv_obj_set_height(ui_weatherIcon, LV_SIZE_CONTENT); /// 1
     lv_obj_set_x(ui_weatherIcon, 2);
@@ -946,6 +949,8 @@ void ui_Screen1_screen_init(void)
         lv_image_set_src(ui_weatherImg, &heavy_rain);
     else if (strcmp(weather_str, "多云") == 0)
         lv_image_set_src(ui_weatherImg, &cloudy);
+    else if (strcmp(weather_str, "阴") == 0)
+        lv_image_set_src(ui_weatherImg, &cloud);
 
     lv_obj_set_width(ui_weatherImg, LV_SIZE_CONTENT);  /// 1
     lv_obj_set_height(ui_weatherImg, LV_SIZE_CONTENT); /// 1

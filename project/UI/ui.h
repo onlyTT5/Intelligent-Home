@@ -82,6 +82,8 @@ extern "C"
     LV_IMG_DECLARE(heavy_rain);               // assets/ChangeRoom.png
     LV_IMG_DECLARE(mid_rain);                 // assets/ChangeRoom.png
     LV_IMG_DECLARE(light_rain);               // assets/ChangeRoom.png
+    LV_IMG_DECLARE(light_rain);               // assets/ChangeRoom.png
+    LV_IMG_DECLARE(cloud);                    // assets/ChangeRoom.png
 
     // My_Heart_Will_Go_On
 

@@ -314,7 +314,7 @@ void increaseTemp(lv_event_t *e)
 }
 
 // 灯全开全关事件
-void lightAllOn(lv_event_t *e)
+void lightAllOn(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider)
 {
 	lv_event_code_t event_code = lv_event_get_code(e);
 	if (event_code == LV_EVENT_CLICKED)
@@ -324,9 +324,10 @@ void lightAllOn(lv_event_t *e)
 		lv_label_set_text(ui_lightSliderValue, "50%");
 		lv_slider_set_value(ui_lightSlider, 50, LV_ANIM_OFF);
 	}
+
 }
 
-void lightAllOff(lv_event_t *e)
+void lightAllOff(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider)
 {
 	lv_event_code_t event_code = lv_event_get_code(e);
 	if (event_code == LV_EVENT_CLICKED)

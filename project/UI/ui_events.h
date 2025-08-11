@@ -25,8 +25,8 @@ extern "C"
     void nextSong(lv_event_t *e);
     void decreaseTemp(lv_event_t *e);
     void increaseTemp(lv_event_t *e);
-    void lightAllOn(lv_event_t *e);
-    void lightAllOff(lv_event_t *e);
+    void lightAllOn(lv_event_t *e, lv_obj_t *lightOnImg, lv_obj_t *lightOffImg, lv_obj_t *lightSliderValue, lv_obj_t *lightSlider);
+    void lightAllOff(lv_event_t *e, lv_obj_t *lightOnImg, lv_obj_t *lightOffImg, lv_obj_t *lightSliderValue, lv_obj_t *lightSlider);
     void curtainAllOn(lv_event_t *e);
     void curtainAllOff(lv_event_t *e);
     void roomChange(lv_event_t *e);

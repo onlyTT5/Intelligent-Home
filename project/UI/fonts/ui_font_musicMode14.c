@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Size: 14 px
  * Bpp: 1
- * Opts: --bpp 1 --size 14 --font D:/嵌入式/智能家居/squarelineDesign/assets/simhei.ttf -o D:/嵌入式/智能家居/squarelineDesign/assets\ui_font_musicMode14.c --format lvgl -r 0x20-0x7f --symbols 客厅主卧厨房卫生间次卧回家睡觉起床放松出门观影离开进入照明冷暖新风天气音乐空调温度晴天雨多云大小中雨雪湿度灯全开关周深米卡满舒克廖伟珊窗帘 --no-compress --no-prefilter
+ * Opts: --bpp 1 --size 14 --font D:/嵌入式/智能家居/squarelineDesign/assets/simhei.ttf -o D:/嵌入式/智能家居/squarelineDesign/assets\ui_font_musicMode14.c --format lvgl -r 0x20-0x7f --symbols 客厅主卧厨房卫生间次卧回家睡觉起床放松出门观影离开进入照明冷暖新风天气音乐空调温度晴天雨多云大小中雨雪湿度灯全开关周深米卡满舒克廖伟珊窗帘阴 --no-compress --no-prefilter
  ******************************************************************************/
 
 #include "../ui.h"
@@ -616,6 +616,11 @@ static LV_ATTRIBUTE_LARGE_CONST const uint8_t glyph_bitmap[] = {
     0x64, 0x4c, 0xf9, 0x91, 0x32, 0x26, 0x7c, 0xc0,
     0x18, 0xe,
 
+    /* U+9634 "阴" */
+    0xfb, 0xf2, 0x46, 0x48, 0xc9, 0x1a, 0x3f, 0x44,
+    0x64, 0x8c, 0x9f, 0x92, 0x36, 0x86, 0x30, 0xcc,
+    0x30,
+
     /* U+96E8 "雨" */
     0xff, 0xf0, 0x20, 0x2, 0x7, 0xff, 0x42, 0x15,
     0xa9, 0x4a, 0x54, 0x21, 0x52, 0x94, 0xa5, 0x42,
@@ -799,10 +804,11 @@ static const lv_font_fmt_txt_glyph_dsc_t glyph_dsc[] = {
     {.bitmap_index = 1719, .adv_w = 224, .box_w = 13, .box_h = 12, .ofs_x = 0, .ofs_y = -1},
     {.bitmap_index = 1739, .adv_w = 224, .box_w = 11, .box_h = 13, .ofs_x = 1, .ofs_y = -1},
     {.bitmap_index = 1757, .adv_w = 224, .box_w = 11, .box_h = 13, .ofs_x = 1, .ofs_y = -1},
-    {.bitmap_index = 1775, .adv_w = 224, .box_w = 12, .box_h = 12, .ofs_x = 1, .ofs_y = -1},
-    {.bitmap_index = 1793, .adv_w = 224, .box_w = 12, .box_h = 12, .ofs_x = 1, .ofs_y = -1},
-    {.bitmap_index = 1811, .adv_w = 224, .box_w = 12, .box_h = 13, .ofs_x = 1, .ofs_y = -1},
-    {.bitmap_index = 1831, .adv_w = 224, .box_w = 13, .box_h = 12, .ofs_x = 0, .ofs_y = -1}
+    {.bitmap_index = 1775, .adv_w = 224, .box_w = 11, .box_h = 12, .ofs_x = 1, .ofs_y = -1},
+    {.bitmap_index = 1792, .adv_w = 224, .box_w = 12, .box_h = 12, .ofs_x = 1, .ofs_y = -1},
+    {.bitmap_index = 1810, .adv_w = 224, .box_w = 12, .box_h = 12, .ofs_x = 1, .ofs_y = -1},
+    {.bitmap_index = 1828, .adv_w = 224, .box_w = 12, .box_h = 13, .ofs_x = 1, .ofs_y = -1},
+    {.bitmap_index = 1848, .adv_w = 224, .box_w = 13, .box_h = 12, .ofs_x = 0, .ofs_y = -1}
 };
 
 /*---------------------
@@ -817,7 +823,8 @@ static const uint16_t unicode_list_1[] = {
     0x1783, 0x17e1, 0x1847, 0x1869, 0x1951, 0x1cf4, 0x1de7, 0x1fc4,
     0x1ffc, 0x2052, 0x20b4, 0x2242, 0x233a, 0x259d, 0x26f2, 0x2934,
     0x2b8e, 0x2c4d, 0x2c6a, 0x2e46, 0x33e5, 0x3b95, 0x3b9c, 0x3dd6,
-    0x3f4a, 0x41ae, 0x47bb, 0x47c7, 0x48bb, 0x48bd, 0x49c6, 0x4aa1
+    0x3f4a, 0x41ae, 0x47bb, 0x47c7, 0x4807, 0x48bb, 0x48bd, 0x49c6,
+    0x4aa1
 };
 
 /*Collect the unicode lists and glyph_id offsets*/
@@ -829,7 +836,7 @@ static const lv_font_fmt_txt_cmap_t cmaps[] =
     },
     {
         .range_start = 20013, .range_length = 19106, .glyph_id_start = 96,
-        .unicode_list = unicode_list_1, .glyph_id_ofs_list = NULL, .list_length = 64, .type = LV_FONT_FMT_TXT_CMAP_SPARSE_TINY
+        .unicode_list = unicode_list_1, .glyph_id_ofs_list = NULL, .list_length = 65, .type = LV_FONT_FMT_TXT_CMAP_SPARSE_TINY
     }
 };
 
