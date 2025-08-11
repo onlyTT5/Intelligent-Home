@@ -87,6 +87,14 @@ lv_obj_t *ui_curtainOffImg = NULL;
 lv_obj_t *ui_curtainOffText = NULL;
 
 // event funtions
+void ui_event_airOnOffText(lv_event_t *e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    if (event_code == LV_EVENT_CLICKED)
+    {
+        airOnOffText(e);
+    }
+}
 
 // 增加屏幕跳转事件
 void ui_event_ChangeRoom(lv_event_t *e)
@@ -890,7 +898,7 @@ void ui_Screen1_screen_init(void)
     lv_obj_set_style_border_side(ui_playControl, LV_BORDER_SIDE_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_play = lv_image_create(ui_playControl);
-    lv_image_set_src(ui_play, &ui_img_pause_png);
+    lv_image_set_src(ui_play, &play);
     lv_obj_set_width(ui_play, LV_SIZE_CONTENT);  /// 1
     lv_obj_set_height(ui_play, LV_SIZE_CONTENT); /// 1
     lv_obj_set_align(ui_play, LV_ALIGN_CENTER);
@@ -955,6 +963,7 @@ void ui_Screen1_screen_init(void)
     lv_obj_set_style_text_color(ui_temperatureText, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_temperatureText, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_temperatureText, &lv_font_montserrat_28, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_add_flag(ui_temperatureText, LV_OBJ_FLAG_CLICKABLE); /// 使标签可点击
 
     ui_footerLeft = lv_obj_create(ui_footer);
     lv_obj_set_width(ui_footerLeft, 200);
@@ -1113,10 +1122,20 @@ void ui_Screen1_screen_init(void)
     lv_obj_add_event_cb(ui_lightOffImg, ui_event_lightOffImg, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_curtainOnImg, ui_event_curtainOnImg, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_curtainOffImg, ui_event_curtainOffImg, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_temperatureText, ui_event_airOnOffText, LV_EVENT_ALL, NULL);
+
+    // 注册时间和日期标签到时间管理器
+    ui_time_manager_register_labels(ui_Time, ui_Date);
+
+    // 创建一个管道文件
+    mkfifo("/home/gec/pipe", 0777);
 }
 
 void ui_Screen1_screen_destroy(void)
 {
+    // 从时间管理器中注销时间标签
+    ui_time_manager_unregister_labels(ui_Time, ui_Date);
+
     if (ui_Screen1)
         lv_obj_del(ui_Screen1);
 

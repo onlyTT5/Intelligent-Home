@@ -1,5 +1,12 @@
 {
     "files.associations": {
-        "numbers": "c"
-    }
+        "numbers": "c",
+        "ui.h": "c",
+        "ui_events.h": "c",
+        "ui_helpers.h": "c",
+        "lvgl.h": "c",
+        "ui_screen3.h": "c",
+        "ui_screen1.h": "c"
+    },
+    "C_Cpp.errorSquiggles": "enabledIfIncludesResolve"
 }

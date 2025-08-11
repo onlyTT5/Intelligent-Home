@@ -3,7 +3,32 @@
 // LVGL version: 9.2.2
 // Project name: SquareLine_Project
 
+#include "ui_events.h"
 #include "ui.h"
+#include <stdio.h>
+#include <time.h>
+// 点击切换空调状态
+void airOnOffText(lv_event_t *e)
+{
+	lv_event_code_t event_code = lv_event_get_code(e);
+	static int airOn = 1; // 0表示关闭，1表示开启
+
+	if (event_code == LV_EVENT_CLICKED)
+	{
+		if (airOn == 0)
+		{
+			airOn = 1; // 切换到开启状态
+			lv_label_set_text(ui_temperatureText, "26°C");
+			lv_label_set_text(ui_airTemperature, "26°C");
+		}
+		else
+		{
+			airOn = 0; // 切换到关闭状态
+			lv_label_set_text(ui_temperatureText, "Start");
+			lv_label_set_text(ui_airTemperature, "Start");
+		}
+	}
+}
 
 void controlChange1(lv_event_t *e)
 {
@@ -77,19 +102,120 @@ void controlChange6(lv_event_t *e)
 	}
 }
 
+// 音乐播放相关函数
+#include <stdio.h>
+#include <pthread.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+// 音乐结构体
+struct music
+{
+	char path[100]; // 歌曲路径名
+	char lrc[100];	// 歌词文件
+	char pic[100];	// 歌曲封面
+};
+
+// 音乐列表
+struct music musicList[100] = {
+	{"/music/City_Of_Stars.mp3", "NULL", "NULL"},
+	{"/music/My_Heart_Will_Go_On.mp3", "NULL", "NULL"},
+	{"/music/The_Way_I_Still_Love_You.mp3", "NULL", "NULL"}};
+
+int num = 3; // 音乐列表的长度
+
+int _index = 0; // 当前播放歌曲的索引
+static int is_playing = 0; // 0表示暂停，1表示播放
+
+void *playMusic(void *arg)
+{
+	// 1.加载mplayer  播放进程
+	char cmd[1024] = {0};
+
+	// 当前歌曲信息
+	printf("当前播放歌曲：%s\n", musicList[_index].path);
+	printf("当前播放歌词：%s\n", musicList[_index].lrc);
+	printf("当前播放封面：%s\n", musicList[_index].pic);
+
+	// 2.拼接播放命令
+	sprintf(cmd, "mplayer -slave -quiet -input file=/home/gec/pipe %s", musicList[_index].path);
+
+	// 3.执行命令
+	FILE *fp = popen(cmd, "r");
+	if (fp == NULL)
+	{
+		perror("popen");
+		return NULL;
+	}
+
+	// 读取mplayer的输出信息
+	while (1)
+	{
+		char buf[1024] = {0};
+		if (fgets(buf, sizeof(buf), fp) == NULL)
+		{
+			break;
+		}
+		printf("%s", buf);
+	}
+
+	pclose(fp);
+}
+
+void startPlay()
+{
+	// 开启音乐播放线程
+	pthread_t tid;
+	pthread_create(&tid, NULL, playMusic, NULL);
+	pthread_detach(tid); // 分离属性
+}
+
 void playSong(lv_event_t *e)
 {
-	// Your code here
+	lv_event_code_t event_code = lv_event_get_code(e);
+	static int is_playing = 0; // 0表示暂停，1表示播放
+	if (event_code == LV_EVENT_CLICKED)
+	{
+		if (is_playing == 0)
+		{
+			is_playing = 1; // 切换到播放状态
+			lv_image_set_src(ui_play, &ui_img_pause_png);  // 播放时显示播放图标
+			startPlay();
+			system("echo 'pause' > /home/gec/pipe");
+			printf("开始播放音乐\n");
+		}
+		else
+		{
+			is_playing = 0; // 切换到暂停状态
+			lv_image_set_src(ui_play, &play);  // 暂停时显示暂停图标
+			// 通过管道发送暂停命令给mplayer
+			printf("暂停播放音乐\n");
+		}
+	}
 }
 
 void prevSong(lv_event_t *e)
 {
-	// Your code here
+	printf("上一首\n");
+	system("killall mplayer"); // 结束当前播放
+	_index--;
+	if (_index < 0)
+	{
+		_index = 2;
+	}
+	startPlay();
 }
 
 void nextSong(lv_event_t *e)
 {
-	// Your code here
+	printf("下一首\n");
+	system("killall mplayer"); // 结束当前播放
+	_index++;
+	if (_index >= num)
+	{
+		_index = 0;
+	}
+	startPlay();
 }
 
 // 减少温度事件
@@ -109,7 +235,8 @@ void decreaseTemp(lv_event_t *e)
 		char new_temp[10];
 		sprintf(new_temp, "%d", temp);
 		lv_label_set_text(ui_airTemperature, new_temp);
-		if (degree_sign) {
+		if (degree_sign)
+		{
 			lv_label_set_text(ui_airTemperature, strcat(new_temp, "°C"));
 			lv_label_set_text(ui_temperatureText, new_temp);
 			// ui_temperatureText
@@ -133,7 +260,8 @@ void increaseTemp(lv_event_t *e)
 		char new_temp[10];
 		sprintf(new_temp, "%d", temp);
 		lv_label_set_text(ui_airTemperature, new_temp);
-		if (degree_sign) {
+		if (degree_sign)
+		{
 			lv_label_set_text(ui_airTemperature, strcat(new_temp, "°C"));
 			lv_label_set_text(ui_temperatureText, new_temp);
 		}

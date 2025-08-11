@@ -22,7 +22,9 @@ extern "C"
     extern lv_obj_t *ui_roomCut;
     extern lv_obj_t *ui_roomImg;
     extern lv_obj_t *ui_ChangeRoom;
+
     // 声明全局变量
+    extern void ui_event_airOnOffText(lv_event_t *e);
     extern void ui_event_ChangeRoom(lv_event_t *e);
     extern lv_obj_t *ui_currentTime;
     extern lv_obj_t *ui_Time;

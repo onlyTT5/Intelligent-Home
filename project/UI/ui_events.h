@@ -6,11 +6,14 @@
 #ifndef _UI_EVENTS_H
 #define _UI_EVENTS_H
 
+#include "lvgl.h"
+
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
+    void airOnOffText(lv_event_t *e);
     void controlChange1(lv_event_t *e);
     void controlChange2(lv_event_t *e);
     void controlChange3(lv_event_t *e);

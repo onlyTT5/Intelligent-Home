@@ -15,7 +15,6 @@ extern "C" {
 #include "ui_helpers.h"
 #include "ui_events.h"
 
-
 ///////////////////// SCREENS ////////////////////
 
 #include "screens/ui_Screen1.h"
@@ -59,6 +58,7 @@ LV_IMG_DECLARE(light_click);    // assets/ChangeRoom.png
 LV_IMG_DECLARE(light_on);    // assets/ChangeRoom.png
 LV_IMG_DECLARE(window_shade_click);    // assets/ChangeRoom.png
 LV_IMG_DECLARE(curtain);    // assets/ChangeRoom.png
+LV_IMG_DECLARE(play);    // assets/ChangeRoom.png
 
 // FONTS
 LV_FONT_DECLARE(ui_font_Date);

@@ -9,13 +9,13 @@
 ///////////////////// VARIABLES ////////////////////
 
 // EVENTS
-lv_obj_t * ui____initial_actions0;
+lv_obj_t *ui____initial_actions0;
 
 // IMAGES AND IMAGE SETS
 
 ///////////////////// TEST LVGL SETTINGS ////////////////////
 #if LV_COLOR_DEPTH != 32
-    #error "LV_COLOR_DEPTH should be 32bit to match SquareLine Studio's settings"
+#error "LV_COLOR_DEPTH should be 32bit to match SquareLine Studio's settings"
 #endif
 
 ///////////////////// ANIMATIONS ////////////////////
@@ -26,9 +26,12 @@ lv_obj_t * ui____initial_actions0;
 
 void ui_init(void)
 {
-    lv_disp_t * dispp = lv_display_get_default();
-    lv_theme_t * theme = lv_theme_default_init(dispp, lv_palette_main(LV_PALETTE_BLUE), lv_palette_main(LV_PALETTE_RED),
-                                               false, LV_FONT_DEFAULT);
+    // 初始化时间管理器
+    ui_time_manager_init();
+
+    lv_disp_t *dispp = lv_display_get_default();
+    lv_theme_t *theme = lv_theme_default_init(dispp, lv_palette_main(LV_PALETTE_BLUE), lv_palette_main(LV_PALETTE_RED),
+                                              false, LV_FONT_DEFAULT);
     lv_disp_set_theme(dispp, theme);
     ui_Screen1_screen_init();
     ui_Screen2_screen_init();
@@ -39,6 +42,9 @@ void ui_init(void)
 
 void ui_destroy(void)
 {
+    // 清理时间管理器
+    ui_time_manager_cleanup();
+
     ui_Screen1_screen_destroy();
     ui_Screen2_screen_destroy();
     ui_Screen3_screen_destroy();
