@@ -29,6 +29,14 @@ extern "C" {
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <time.h>
+#include <unistd.h>
+#include <string.h>
+#include <fcntl.h>
+#include "cJSON.h"
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 
 // EVENTS
 
@@ -65,6 +73,11 @@ LV_IMG_DECLARE(light_on);    // assets/ChangeRoom.png
 LV_IMG_DECLARE(window_shade_click);    // assets/ChangeRoom.png
 LV_IMG_DECLARE(curtain);    // assets/ChangeRoom.png
 LV_IMG_DECLARE(play);    // assets/ChangeRoom.png
+LV_IMG_DECLARE(City_Of_Stars);    // assets/ChangeRoom.png
+LV_IMG_DECLARE(My_Heart_Will_Go_On);    // assets/ChangeRoom.png
+LV_IMG_DECLARE(The_Way_I_Still_Love_You);    // assets/ChangeRoom.png
+
+// My_Heart_Will_Go_On
 
 // FONTS
 LV_FONT_DECLARE(ui_font_Date);

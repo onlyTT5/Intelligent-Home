@@ -5,8 +5,62 @@
 
 #include "ui_events.h"
 #include "ui.h"
-#include <stdio.h>
-#include <time.h>
+
+// 音乐结构体
+struct music
+{
+	char path[100]; // 歌曲路径名
+	char lrc[100];	// 歌词文件
+	char pic[100];	// 歌曲封面
+};
+
+// 音乐列表
+struct music musicList[100] = {
+	{"/music/City_Of_Stars.mp3", "NULL", "NULL"},
+	{"/music/My_Heart_Will_Go_On.mp3", "NULL", "NULL"},
+	{"/music/The_Way_I_Still_Love_You.mp3", "NULL", "NULL"}};
+
+int num = 3; // 音乐列表的长度
+
+int _index = 0;			   // 当前播放歌曲的索引
+int is_playing = 0;		   // 0表示暂停，1表示播放
+int music_initialized = 0; // 0表示未初始化，1表示已初始化mplayer进程
+
+void *playMusic(void *arg)
+{
+	// 1.加载mplayer  播放进程
+	char cmd[1024] = {0};
+
+	// 当前歌曲信息
+	printf("当前播放歌曲：%s\n", musicList[_index].path);
+	printf("当前播放歌词：%s\n", musicList[_index].lrc);
+	printf("当前播放封面：%s\n", musicList[_index].pic);
+
+	// 2.拼接播放命令
+	sprintf(cmd, "mplayer -slave -quiet -input file=/home/gec/pipe %s", musicList[_index].path);
+
+	// 3.执行命令
+	FILE *fp = popen(cmd, "r");
+	if (fp == NULL)
+	{
+		perror("popen");
+		return NULL;
+	}
+
+	// 读取mplayer的输出信息
+	while (1)
+	{
+		char buf[1024] = {0};
+		if (fgets(buf, sizeof(buf), fp) == NULL)
+		{
+			break;
+		}
+		printf("%s", buf);
+	}
+
+	pclose(fp);
+}
+
 // 点击切换空调状态
 void airOnOffText(lv_event_t *e)
 {
@@ -102,66 +156,22 @@ void controlChange6(lv_event_t *e)
 	}
 }
 
-// 音乐播放相关函数
-#include <stdio.h>
-#include <pthread.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-// 音乐结构体
-struct music
-{
-	char path[100]; // 歌曲路径名
-	char lrc[100];	// 歌词文件
-	char pic[100];	// 歌曲封面
-};
+// 音乐图片数组
+char *music_images[] = {
+	&City_Of_Stars,
+	&My_Heart_Will_Go_On,
+	&The_Way_I_Still_Love_You};
 
-// 音乐列表
-struct music musicList[100] = {
-	{"/music/City_Of_Stars.mp3", "NULL", "NULL"},
-	{"/music/My_Heart_Will_Go_On.mp3", "NULL", "NULL"},
-	{"/music/The_Way_I_Still_Love_You.mp3", "NULL", "NULL"}};
+// 音乐名和歌手
+char *music_names[] = {
+	"City Of Stars",
+	"My Heart Will Go On",
+	"The Way I Still Love You"};
 
-int num = 3; // 音乐列表的长度
-
-int _index = 0;			   // 当前播放歌曲的索引
-int is_playing = 0;		   // 0表示暂停，1表示播放
-int music_initialized = 0; // 0表示未初始化，1表示已初始化mplayer进程
-
-void *playMusic(void *arg)
-{
-	// 1.加载mplayer  播放进程
-	char cmd[1024] = {0};
-
-	// 当前歌曲信息
-	printf("当前播放歌曲：%s\n", musicList[_index].path);
-	printf("当前播放歌词：%s\n", musicList[_index].lrc);
-	printf("当前播放封面：%s\n", musicList[_index].pic);
-
-	// 2.拼接播放命令
-	sprintf(cmd, "mplayer -slave -quiet -input file=/home/gec/pipe %s", musicList[_index].path);
-
-	// 3.执行命令
-	FILE *fp = popen(cmd, "r");
-	if (fp == NULL)
-	{
-		perror("popen");
-		return NULL;
-	}
-
-	// 读取mplayer的输出信息
-	while (1)
-	{
-		char buf[1024] = {0};
-		if (fgets(buf, sizeof(buf), fp) == NULL)
-		{
-			break;
-		}
-		printf("%s", buf);
-	}
-
-	pclose(fp);
-}
+char *music_singers[] = {
+	"周深/米卡",
+	"满舒克/MuSik I/廖伟珊",
+	"Reynard Silva"};
 
 void startPlay()
 {
@@ -187,6 +197,10 @@ void playSong(lv_event_t *e)
 
 			if (!music_initialized)
 			{
+				lv_obj_set_style_bg_image_src(ui_musicInfo, music_images[_index], LV_PART_MAIN | LV_STATE_DEFAULT);
+				lv_label_set_text(ui_songName, music_names[_index]);
+				lv_label_set_text(ui_singer, music_singers[_index]);
+				
 				// 第一次播放，启动mplayer
 				startPlay();
 				printf("开始播放音乐\n");
@@ -219,6 +233,10 @@ void prevSong(lv_event_t *e)
 	{
 		_index = 2;
 	}
+	lv_obj_set_style_bg_image_src(ui_musicInfo, music_images[_index], LV_PART_MAIN | LV_STATE_DEFAULT);
+	lv_label_set_text(ui_songName, music_names[_index]);
+	lv_label_set_text(ui_singer, music_singers[_index]);
+
 	// 切换歌曲后自动开始播放
 	is_playing = 1;								  // 设置播放状态
 	lv_image_set_src(ui_play, &ui_img_pause_png); // 播放时显示暂停图标
@@ -236,7 +254,11 @@ void nextSong(lv_event_t *e)
 		_index = 0;
 	}
 	// 切换歌曲后自动开始播放
-	is_playing = 1;								  // 设置播放状态
+	is_playing = 1; // 设置播放状态
+	lv_obj_set_style_bg_image_src(ui_musicInfo, music_images[_index], LV_PART_MAIN | LV_STATE_DEFAULT);
+	lv_label_set_text(ui_songName, music_names[_index]);
+	lv_label_set_text(ui_singer, music_singers[_index]);
+
 	lv_image_set_src(ui_play, &ui_img_pause_png); // 播放时显示暂停图标
 	startPlay();
 }
