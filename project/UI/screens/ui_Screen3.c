@@ -103,7 +103,7 @@ void ui_event_goHome2(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        controlChange1(e);
+        controlChange1(e, ui_lightOnImg2, ui_lightOffImg2, ui_lightSliderValue2, ui_lightSlider2);
     }
 }
 
@@ -113,7 +113,7 @@ void ui_event_gobed2(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        controlChange2(e);
+        controlChange2(e, ui_lightOnImg2, ui_lightOffImg2, ui_lightSliderValue2, ui_lightSlider2);
     }
 }
 
@@ -123,7 +123,7 @@ void ui_event_relex2(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        controlChange3(e);
+        controlChange3(e, ui_lightOnImg2, ui_lightOffImg2, ui_lightSliderValue2, ui_lightSlider2);
     }
 }
 
@@ -133,7 +133,7 @@ void ui_event_getUp2(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        controlChange4(e);
+        controlChange4(e, ui_lightOnImg2, ui_lightOffImg2, ui_lightSliderValue2, ui_lightSlider2);
     }
 }
 
@@ -143,7 +143,7 @@ void ui_event_cinema2(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        controlChange5(e);
+        controlChange5(e, ui_lightOnImg2, ui_lightOffImg2, ui_lightSliderValue2, ui_lightSlider2);
     }
 }
 
@@ -153,7 +153,7 @@ void ui_event_goOut2(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        controlChange6(e);
+        controlChange6(e, ui_lightOnImg2, ui_lightOffImg2, ui_lightSliderValue2, ui_lightSlider2);
     }
 }
 
@@ -204,7 +204,7 @@ void ui_event_lower2(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        decreaseTemp(e);
+        decreaseTemp(e, ui_airTemperature2, ui_temperatureText2);
     }
 }
 
@@ -214,7 +214,7 @@ void ui_event_increase2(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        increaseTemp(e);
+        increaseTemp(e, ui_airTemperature2, ui_temperatureText2);
     }
 }
 
@@ -235,7 +235,7 @@ void ui_event_lightOnImg2(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        lightAllOn(e);
+        lightAllOn(e, ui_lightOnImg2, ui_lightOffImg2, ui_lightSliderValue2, ui_lightSlider2);
     }
 }
 
@@ -245,7 +245,7 @@ void ui_event_lightOffImg2(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        lightAllOff(e);
+        lightAllOff(e, ui_lightOnImg2, ui_lightOffImg2, ui_lightSliderValue2, ui_lightSlider2);
     }
 }
 
@@ -255,7 +255,7 @@ void ui_event_curtainOnImg2(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        curtainAllOn(e);
+        curtainAllOn(e, ui_curtainOnImg2, ui_curtainOffImg2);
     }
 }
 

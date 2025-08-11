@@ -5,6 +5,7 @@
 
 #include "../ui.h"
 #include "ui_time_manager.h"
+#include "ui_weather.h"
 
 lv_obj_t *ui_Screen2 = NULL;
 lv_obj_t *ui_entirety1 = NULL;
@@ -275,85 +276,7 @@ void ui_event_curtainOffImg1(lv_event_t *e)
 void ui_Screen2_screen_init(void)
 {
     // 天气信息获取
-
-    // 1.创建客户端通信对象
-    int tcp_socket = socket(AF_INET, SOCK_STREAM, 0);
-
-    // 2.设置 HTTP 服务器地址信息
-    struct sockaddr_in addr;
-    addr.sin_family = AF_INET;                         // IPV4 协议
-    addr.sin_port = htons(80);                         // HTTP默认端口为  80
-    addr.sin_addr.s_addr = inet_addr("120.77.134.57"); // 服务器IP
-
-    // 2.连接服务器
-    connect(tcp_socket, (struct sockaddr *)&addr, sizeof(addr));
-
-    char Http_Request[512] = "GET /v3/weather/weatherInfo?key=6a1edf865110f3d7c628e88b2f31657d&city=440100 HTTP/1.1\r\nHost:restapi.amap.com\r\n\r\n";
-
-    // 3.发送 HTTP 请求
-    write(tcp_socket, Http_Request, strlen(Http_Request));
-
-    // 4.读取服务器的应答数据
-    char buffer[4096] = {0};
-
-    read(tcp_socket, buffer, sizeof(buffer));
-
-    char *tmp = strstr(buffer, "\r\n\r\n") + 4;
-
-    cJSON *obj = cJSON_Parse(tmp);
-    if (obj == NULL)
-    {
-        printf("parse json failed\n");
-        close(tcp_socket);
-        return;
-    }
-
-    // 获取lives数组
-    cJSON *lives_array = cJSON_GetObjectItem(obj, "lives");
-    if (lives_array == NULL || !cJSON_IsArray(lives_array))
-    {
-        printf("获取lives数组失败\n");
-        cJSON_Delete(obj);
-        close(tcp_socket);
-        return;
-    }
-
-    // 获取数组大小
-    int array_size = cJSON_GetArraySize(lives_array);
-    cJSON *weather;
-    cJSON *temperature;
-
-    // 保存天气数据的字符串
-    char weather_str[64] = "晴"; // 默认值
-    char temp_str[32] = "23";    // 默认值
-
-    // 循环遍历lives数组中的每个元素
-    for (int i = 0; i < array_size; i++)
-    {
-        cJSON *live_item = cJSON_GetArrayItem(lives_array, i);
-        if (live_item == NULL)
-            continue;
-        weather = cJSON_GetObjectItem(live_item, "weather");
-        temperature = cJSON_GetObjectItem(live_item, "temperature");
-
-        // 保存天气和温度数据
-        if (weather && cJSON_GetStringValue(weather))
-        {
-            strncpy(weather_str, cJSON_GetStringValue(weather), sizeof(weather_str) - 1);
-            weather_str[sizeof(weather_str) - 1] = '\0';
-        }
-        if (temperature && cJSON_GetStringValue(temperature))
-        {
-            strncpy(temp_str, cJSON_GetStringValue(temperature), sizeof(temp_str) - 1);
-            temp_str[sizeof(temp_str) - 1] = '\0';
-        }
-    }
-
-    // 释放JSON对象内存
-    cJSON_Delete(obj);
-
-    // 5.关闭连接
-    close(tcp_socket);
+    ui_weather_fetch();
 
     ui_Screen2 = lv_obj_create(NULL);
     lv_obj_remove_flag(ui_Screen2, LV_OBJ_FLAG_SCROLLABLE); /// Flags
@@ -494,7 +417,20 @@ void ui_Screen2_screen_init(void)
     lv_obj_set_style_border_side(ui_weather1, LV_BORDER_SIDE_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_weatherIcon1 = lv_image_create(ui_weather1);
-    lv_image_set_src(ui_weatherIcon1, &ui_img_sun_png);
+    if (strcmp(weather_str, "晴") == 0)
+        lv_image_set_src(ui_weatherIcon1, &ui_img_sun_png);
+    else if (strcmp(weather_str, "小雨") == 0)
+        lv_image_set_src(ui_weatherIcon1, &light_rain);
+    else if (strcmp(weather_str, "中雨") == 0)
+        lv_image_set_src(ui_weatherIcon1, &mid_rain);
+    else if (strcmp(weather_str, "大雨") == 0)
+        lv_image_set_src(ui_weatherIcon1, &heavy_rain);
+    else if (strcmp(weather_str, "多云") == 0)
+        lv_image_set_src(ui_weatherIcon1, &cloudy);
+    else if (strcmp(weather_str, "阴") == 0)
+        lv_image_set_src(ui_weatherIcon1, &cloud);
+    else if (strcmp(weather_str, "雾") == 0)
+        lv_image_set_src(ui_weatherIcon1, &fog);
     lv_obj_set_width(ui_weatherIcon1, LV_SIZE_CONTENT);  /// 1
     lv_obj_set_height(ui_weatherIcon1, LV_SIZE_CONTENT); /// 1
     lv_obj_set_x(ui_weatherIcon1, 2);
@@ -507,7 +443,9 @@ void ui_Screen2_screen_init(void)
     lv_obj_set_width(ui_temperature2, LV_SIZE_CONTENT);  /// 1
     lv_obj_set_height(ui_temperature2, LV_SIZE_CONTENT); /// 1
     lv_obj_set_align(ui_temperature2, LV_ALIGN_RIGHT_MID);
-    lv_label_set_text(ui_temperature2, "23°C");
+    char temp_display[32];
+    snprintf(temp_display, sizeof(temp_display), "%s°C", temp_str);
+    lv_label_set_text(ui_temperature2, temp_display);
     lv_obj_set_style_text_color(ui_temperature2, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_temperature2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_temperature2, &lv_font_montserrat_16, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -887,7 +825,7 @@ void ui_Screen2_screen_init(void)
     lv_obj_set_width(ui_weatherTemperature1, LV_SIZE_CONTENT);  /// 1
     lv_obj_set_height(ui_weatherTemperature1, LV_SIZE_CONTENT); /// 1
     lv_obj_set_align(ui_weatherTemperature1, LV_ALIGN_BOTTOM_MID);
-    lv_label_set_text(ui_weatherTemperature1, "23°C");
+    lv_label_set_text(ui_weatherTemperature1, temp_display);
     lv_obj_set_style_text_color(ui_weatherTemperature1, lv_color_hex(0xA1A2A6), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_weatherTemperature1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_weatherTemperature1, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -898,13 +836,26 @@ void ui_Screen2_screen_init(void)
     lv_obj_set_x(ui_weatherState1, 15);
     lv_obj_set_y(ui_weatherState1, 0);
     lv_obj_set_align(ui_weatherState1, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_weatherState1, "晴");
+    lv_label_set_text(ui_weatherState1, weather_str);
     lv_obj_set_style_text_color(ui_weatherState1, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_weatherState1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_weatherState1, &ui_font_Font18, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_weatherImg1 = lv_image_create(ui_weatherInfo1);
-    lv_image_set_src(ui_weatherImg1, &ui_img_sun_png);
+    if (strcmp(weather_str, "晴") == 0)
+        lv_image_set_src(ui_weatherImg1, &ui_img_sun_png);
+    else if (strcmp(weather_str, "小雨") == 0)
+        lv_image_set_src(ui_weatherImg1, &light_rain);
+    else if (strcmp(weather_str, "中雨") == 0)
+        lv_image_set_src(ui_weatherImg1, &mid_rain);
+    else if (strcmp(weather_str, "大雨") == 0)
+        lv_image_set_src(ui_weatherImg1, &heavy_rain);
+    else if (strcmp(weather_str, "多云") == 0)
+        lv_image_set_src(ui_weatherImg1, &cloudy);
+    else if (strcmp(weather_str, "阴") == 0)
+        lv_image_set_src(ui_weatherImg1, &cloud);
+    else if (strcmp(weather_str, "雾") == 0)
+        lv_image_set_src(ui_weatherImg1, &fog);
     lv_obj_set_width(ui_weatherImg1, LV_SIZE_CONTENT);  /// 1
     lv_obj_set_height(ui_weatherImg1, LV_SIZE_CONTENT); /// 1
     lv_obj_set_x(ui_weatherImg1, -15);

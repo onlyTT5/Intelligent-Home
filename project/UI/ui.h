@@ -42,6 +42,9 @@ extern "C"
     // EVENTS
 
     extern lv_obj_t *ui____initial_actions0;
+    // 保存天气数据的字符串
+    extern char weather_str[64]; // 声明
+    extern char temp_str[32];    // 声明
 
     // IMAGES AND IMAGE SETS
     LV_IMG_DECLARE(ui_img_background_png);    // assets/background.png
@@ -84,6 +87,7 @@ extern "C"
     LV_IMG_DECLARE(light_rain);               // assets/ChangeRoom.png
     LV_IMG_DECLARE(light_rain);               // assets/ChangeRoom.png
     LV_IMG_DECLARE(cloud);                    // assets/ChangeRoom.png
+    LV_IMG_DECLARE(fog);           // assets/Weather.png
 
     // My_Heart_Will_Go_On
 
