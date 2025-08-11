@@ -124,8 +124,9 @@ struct music musicList[100] = {
 
 int num = 3; // 音乐列表的长度
 
-int _index = 0; // 当前播放歌曲的索引
-static int is_playing = 0; // 0表示暂停，1表示播放
+int _index = 0;			   // 当前播放歌曲的索引
+int is_playing = 0;		   // 0表示暂停，1表示播放
+int music_initialized = 0; // 0表示未初始化，1表示已初始化mplayer进程
 
 void *playMusic(void *arg)
 {
@@ -164,31 +165,45 @@ void *playMusic(void *arg)
 
 void startPlay()
 {
-	// 开启音乐播放线程
-	pthread_t tid;
-	pthread_create(&tid, NULL, playMusic, NULL);
-	pthread_detach(tid); // 分离属性
+	// 只有在音乐未初始化时才创建新的播放线程
+	if (!music_initialized)
+	{
+		pthread_t tid;
+		pthread_create(&tid, NULL, playMusic, NULL);
+		pthread_detach(tid);   // 分离属性
+		music_initialized = 1; // 标记为已初始化
+	}
 }
 
 void playSong(lv_event_t *e)
 {
 	lv_event_code_t event_code = lv_event_get_code(e);
-	static int is_playing = 0; // 0表示暂停，1表示播放
 	if (event_code == LV_EVENT_CLICKED)
 	{
 		if (is_playing == 0)
 		{
-			is_playing = 1; // 切换到播放状态
-			lv_image_set_src(ui_play, &ui_img_pause_png);  // 播放时显示播放图标
-			startPlay();
-			system("echo 'pause' > /home/gec/pipe");
-			printf("开始播放音乐\n");
+			is_playing = 1;								  // 切换到播放状态
+			lv_image_set_src(ui_play, &ui_img_pause_png); // 播放时显示暂停图标
+
+			if (!music_initialized)
+			{
+				// 第一次播放，启动mplayer
+				startPlay();
+				printf("开始播放音乐\n");
+			}
+			else
+			{
+				// 恢复播放，发送pause命令切换状态
+				system("echo 'pause' > /home/gec/pipe");
+				printf("恢复播放音乐\n");
+			}
 		}
 		else
 		{
-			is_playing = 0; // 切换到暂停状态
-			lv_image_set_src(ui_play, &play);  // 暂停时显示暂停图标
+			is_playing = 0;					  // 切换到暂停状态
+			lv_image_set_src(ui_play, &play); // 暂停时显示播放图标
 			// 通过管道发送暂停命令给mplayer
+			system("echo 'pause' > /home/gec/pipe");
 			printf("暂停播放音乐\n");
 		}
 	}
@@ -198,11 +213,15 @@ void prevSong(lv_event_t *e)
 {
 	printf("上一首\n");
 	system("killall mplayer"); // 结束当前播放
+	music_initialized = 0;	   // 重置初始化状态
 	_index--;
 	if (_index < 0)
 	{
 		_index = 2;
 	}
+	// 切换歌曲后自动开始播放
+	is_playing = 1;								  // 设置播放状态
+	lv_image_set_src(ui_play, &ui_img_pause_png); // 播放时显示暂停图标
 	startPlay();
 }
 
@@ -210,11 +229,15 @@ void nextSong(lv_event_t *e)
 {
 	printf("下一首\n");
 	system("killall mplayer"); // 结束当前播放
+	music_initialized = 0;	   // 重置初始化状态
 	_index++;
 	if (_index >= num)
 	{
 		_index = 0;
 	}
+	// 切换歌曲后自动开始播放
+	is_playing = 1;								  // 设置播放状态
+	lv_image_set_src(ui_play, &ui_img_pause_png); // 播放时显示暂停图标
 	startPlay();
 }
 

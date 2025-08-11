@@ -23,6 +23,12 @@ extern "C" {
 
 ///////////////////// VARIABLES ////////////////////
 
+// 音乐播放相关函数
+#include <stdio.h>
+#include <pthread.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 // EVENTS
 

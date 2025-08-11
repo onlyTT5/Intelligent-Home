@@ -42,8 +42,8 @@ void ui_init(void)
 
 void ui_destroy(void)
 {
-    // 清理时间管理器
-    ui_time_manager_cleanup();
+    // 从时间管理器中注销时间标签
+    ui_time_manager_unregister_labels(ui_Time, ui_Date);
 
     ui_Screen1_screen_destroy();
     ui_Screen2_screen_destroy();
