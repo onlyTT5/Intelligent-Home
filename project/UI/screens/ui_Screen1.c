@@ -284,6 +284,93 @@ void ui_event_curtainOffImg(lv_event_t *e)
 
 void ui_Screen1_screen_init(void)
 {
+    // 天气信息获取
+
+    // 1.创建客户端通信对象
+    int tcp_socket = socket(AF_INET, SOCK_STREAM, 0);
+
+    // 2.设置 HTTP 服务器地址信息
+    struct sockaddr_in addr;
+    addr.sin_family = AF_INET;                         // IPV4 协议
+    addr.sin_port = htons(80);                         // HTTP默认端口为  80
+    addr.sin_addr.s_addr = inet_addr("120.77.134.57"); // 服务器IP
+
+    // 2.连接服务器
+    connect(tcp_socket, (struct sockaddr *)&addr, sizeof(addr));
+
+    char Http_Request[512] = "GET /v3/weather/weatherInfo?key=6a1edf865110f3d7c628e88b2f31657d&city=440100 HTTP/1.1\r\nHost:restapi.amap.com\r\n\r\n";
+
+    // 3.发送 HTTP 请求
+    write(tcp_socket, Http_Request, strlen(Http_Request));
+
+    // 4.读取服务器的应答数据
+    char buffer[4096] = {0};
+
+    read(tcp_socket, buffer, sizeof(buffer));
+
+    char *tmp = strstr(buffer, "\r\n\r\n") + 4;
+
+    cJSON *obj = cJSON_Parse(tmp);
+    if (obj == NULL)
+    {
+        printf("parse json failed\n");
+        return -1;
+    }
+
+    // 获取lives数组
+    cJSON *lives_array = cJSON_GetObjectItem(obj, "lives");
+    if (lives_array == NULL || !cJSON_IsArray(lives_array))
+    {
+        printf("获取lives数组失败\n");
+        cJSON_Delete(obj);
+        return -1;
+    }
+
+    // 获取数组大小
+    int array_size = cJSON_GetArraySize(lives_array);
+    cJSON *weather;
+    cJSON *temperature;
+
+    // 保存天气数据的字符串
+    char weather_str[64] = "晴"; // 默认值
+    char temp_str[32] = "23";    // 默认值
+
+    // 循环遍历lives数组中的每个元素
+    for (int i = 0; i < array_size; i++)
+    {
+        cJSON *live_item = cJSON_GetArrayItem(lives_array, i);
+        if (live_item == NULL)
+            continue;
+
+        // 获取各个天气字段
+        cJSON *province = cJSON_GetObjectItem(live_item, "province");
+        cJSON *city = cJSON_GetObjectItem(live_item, "city");
+        weather = cJSON_GetObjectItem(live_item, "weather");
+        temperature = cJSON_GetObjectItem(live_item, "temperature");
+        cJSON *winddirection = cJSON_GetObjectItem(live_item, "winddirection");
+        cJSON *windpower = cJSON_GetObjectItem(live_item, "windpower");
+        cJSON *humidity = cJSON_GetObjectItem(live_item, "humidity");
+        cJSON *reporttime = cJSON_GetObjectItem(live_item, "reporttime");
+
+        // 保存天气和温度数据
+        if (weather && cJSON_GetStringValue(weather))
+        {
+            strncpy(weather_str, cJSON_GetStringValue(weather), sizeof(weather_str) - 1);
+            weather_str[sizeof(weather_str) - 1] = '\0';
+        }
+        if (temperature && cJSON_GetStringValue(temperature))
+        {
+            strncpy(temp_str, cJSON_GetStringValue(temperature), sizeof(temp_str) - 1);
+            temp_str[sizeof(temp_str) - 1] = '\0';
+        }
+    }
+
+    // 释放JSON对象内存
+    cJSON_Delete(obj);
+
+    // 5.关闭连接
+    close(tcp_socket);
+
     ui_Screen1 = lv_obj_create(NULL);
     lv_obj_remove_flag(ui_Screen1, LV_OBJ_FLAG_SCROLLABLE); /// Flags
     lv_obj_set_style_bg_color(ui_Screen1, lv_color_hex(0x000000), LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -424,7 +511,16 @@ void ui_Screen1_screen_init(void)
     lv_obj_set_style_border_side(ui_weather, LV_BORDER_SIDE_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_weatherIcon = lv_image_create(ui_weather);
-    lv_image_set_src(ui_weatherIcon, &ui_img_sun_png);
+    if (strcmp(weather_str, "晴") == 0)
+        lv_image_set_src(ui_weatherIcon, &ui_img_sun_png);
+    else if (strcmp(weather_str, "小雨") == 0)
+        lv_image_set_src(ui_weatherIcon, &light_rain);
+    else if (strcmp(weather_str, "中雨") == 0)
+        lv_image_set_src(ui_weatherIcon, &mid_rain);
+    else if (strcmp(weather_str, "大雨") == 0)
+        lv_image_set_src(ui_weatherIcon, &heavy_rain);
+    else if (strcmp(weather_str, "多云") == 0)
+        lv_image_set_src(ui_weatherIcon, &cloudy);
     lv_obj_set_width(ui_weatherIcon, LV_SIZE_CONTENT);  /// 1
     lv_obj_set_height(ui_weatherIcon, LV_SIZE_CONTENT); /// 1
     lv_obj_set_x(ui_weatherIcon, 2);
@@ -437,7 +533,9 @@ void ui_Screen1_screen_init(void)
     lv_obj_set_width(ui_temperature, LV_SIZE_CONTENT);  /// 1
     lv_obj_set_height(ui_temperature, LV_SIZE_CONTENT); /// 1
     lv_obj_set_align(ui_temperature, LV_ALIGN_RIGHT_MID);
-    lv_label_set_text(ui_temperature, "23°C");
+    char temp_display[32];
+    snprintf(temp_display, sizeof(temp_display), "%s°C", temp_str);
+    lv_label_set_text(ui_temperature, temp_display);
     lv_obj_set_style_text_color(ui_temperature, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_temperature, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_temperature, &lv_font_montserrat_16, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -812,134 +910,11 @@ void ui_Screen1_screen_init(void)
     lv_obj_set_style_text_opa(ui_weatherInfoText, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_weatherInfoText, &ui_font_Font18, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    // 天气信息获取
-
-    // 1.创建客户端通信对象
-    int tcp_socket = socket(AF_INET, SOCK_STREAM, 0);
-    if (tcp_socket == -1)
-    {
-        perror("socket");
-        return 0;
-    }
-    else
-    {
-        printf("socket创建成功\n");
-    }
-
-    // 2.设置 HTTP 服务器地址信息
-    struct sockaddr_in addr;
-    addr.sin_family = AF_INET;                         // IPV4 协议
-    addr.sin_port = htons(80);                         // HTTP默认端口为  80
-    addr.sin_addr.s_addr = inet_addr("120.77.134.57"); // 服务器IP
-
-    // 2.连接服务器
-    int ret = connect(tcp_socket, (struct sockaddr *)&addr, sizeof(addr));
-    if (ret < 0)
-    {
-        perror("connect fail:");
-        return 0;
-    }
-    else
-        printf("connect success\n");
-
-    char Http_Request[512] = "GET /v3/weather/weatherInfo?key=6a1edf865110f3d7c628e88b2f31657d&city=440100 HTTP/1.1\r\nHost:restapi.amap.com\r\n\r\n";
-
-    // 3.发送 HTTP 请求
-    write(tcp_socket, Http_Request, strlen(Http_Request));
-
-    // 4.读取服务器的应答数据
-    char buffer[4096] = {0};
-
-    read(tcp_socket, buffer, sizeof(buffer));
-
-    // printf("%s\n", buffer);
-    char *tmp = strstr(buffer, "\r\n\r\n") + 4;
-    printf("%s\n", tmp);
-
-    cJSON *obj = cJSON_Parse(tmp);
-    if (obj == NULL)
-    {
-        printf("parse json failed\n");
-        return -1;
-    }
-
-    // 获取lives数组
-    cJSON *lives_array = cJSON_GetObjectItem(obj, "lives");
-    if (lives_array == NULL || !cJSON_IsArray(lives_array))
-    {
-        printf("获取lives数组失败\n");
-        cJSON_Delete(obj);
-        return -1;
-    }
-
-    // 获取数组大小
-    int array_size = cJSON_GetArraySize(lives_array);
-    printf("\n=== 广州 天气信息 ===\n");
-    cJSON *weather;
-    cJSON *temperature;
-
-    // 保存天气数据的字符串
-    char weather_str[64] = "晴"; // 默认值
-    char temp_str[32] = "23";    // 默认值
-
-    // 循环遍历lives数组中的每个元素
-    for (int i = 0; i < array_size; i++)
-    {
-        cJSON *live_item = cJSON_GetArrayItem(lives_array, i);
-        if (live_item == NULL)
-            continue;
-
-        // 获取各个天气字段
-        cJSON *province = cJSON_GetObjectItem(live_item, "province");
-        cJSON *city = cJSON_GetObjectItem(live_item, "city");
-        weather = cJSON_GetObjectItem(live_item, "weather");
-        temperature = cJSON_GetObjectItem(live_item, "temperature");
-        cJSON *winddirection = cJSON_GetObjectItem(live_item, "winddirection");
-        cJSON *windpower = cJSON_GetObjectItem(live_item, "windpower");
-        cJSON *humidity = cJSON_GetObjectItem(live_item, "humidity");
-        cJSON *reporttime = cJSON_GetObjectItem(live_item, "reporttime");
-
-        // 保存天气和温度数据
-        if (weather && cJSON_GetStringValue(weather))
-        {
-            strncpy(weather_str, cJSON_GetStringValue(weather), sizeof(weather_str) - 1);
-            weather_str[sizeof(weather_str) - 1] = '\0';
-        }
-        if (temperature && cJSON_GetStringValue(temperature))
-        {
-            strncpy(temp_str, cJSON_GetStringValue(temperature), sizeof(temp_str) - 1);
-            temp_str[sizeof(temp_str) - 1] = '\0';
-        }
-
-        // 输出天气信息
-        printf("省份: %s\n", cJSON_GetStringValue(province));
-        printf("城市: %s\n", cJSON_GetStringValue(city));
-        printf("天气: %s\n", cJSON_GetStringValue(weather));
-        printf("温度: %s°C\n", cJSON_GetStringValue(temperature));
-        printf("风向: %s\n", cJSON_GetStringValue(winddirection));
-        printf("风力: %s级\n", cJSON_GetStringValue(windpower));
-        printf("湿度: %s%%\n", cJSON_GetStringValue(humidity));
-        printf("更新时间: %s\n", cJSON_GetStringValue(reporttime));
-
-        if (i < array_size - 1)
-        {
-            printf("\n--- 下一条记录 ---\n");
-        }
-    }
-
-    // 释放JSON对象内存
-    cJSON_Delete(obj);
-
-    // 5.关闭连接
-    close(tcp_socket);
-
     ui_weatherTemperature = lv_label_create(ui_weatherInfo);
     lv_obj_set_width(ui_weatherTemperature, LV_SIZE_CONTENT);  /// 1
     lv_obj_set_height(ui_weatherTemperature, LV_SIZE_CONTENT); /// 1
     lv_obj_set_align(ui_weatherTemperature, LV_ALIGN_BOTTOM_MID);
     // 创建温度显示字符串，添加°C单位
-    char temp_display[32];
-    snprintf(temp_display, sizeof(temp_display), "%s°C", temp_str);
     lv_label_set_text(ui_weatherTemperature, temp_display);
 
     lv_obj_set_style_text_color(ui_weatherTemperature, lv_color_hex(0xA1A2A6), LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -958,7 +933,17 @@ void ui_Screen1_screen_init(void)
     lv_obj_set_style_text_font(ui_weatherState, &ui_font_Font18, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_weatherImg = lv_image_create(ui_weatherInfo);
-    lv_image_set_src(ui_weatherImg, &ui_img_sun_png);
+    if (strcmp(weather_str, "晴") == 0)
+        lv_image_set_src(ui_weatherImg, &ui_img_sun_png);
+    else if (strcmp(weather_str, "小雨") == 0)
+        lv_image_set_src(ui_weatherImg, &light_rain);
+    else if (strcmp(weather_str, "中雨") == 0)
+        lv_image_set_src(ui_weatherImg, &mid_rain);
+    else if (strcmp(weather_str, "大雨") == 0)
+        lv_image_set_src(ui_weatherImg, &heavy_rain);
+    else if (strcmp(weather_str, "多云") == 0)
+        lv_image_set_src(ui_weatherImg, &cloudy);
+
     lv_obj_set_width(ui_weatherImg, LV_SIZE_CONTENT);  /// 1
     lv_obj_set_height(ui_weatherImg, LV_SIZE_CONTENT); /// 1
     lv_obj_set_x(ui_weatherImg, -15);

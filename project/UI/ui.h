@@ -75,7 +75,11 @@ LV_IMG_DECLARE(curtain);    // assets/ChangeRoom.png
 LV_IMG_DECLARE(play);    // assets/ChangeRoom.png
 LV_IMG_DECLARE(City_Of_Stars);    // assets/ChangeRoom.png
 LV_IMG_DECLARE(My_Heart_Will_Go_On);    // assets/ChangeRoom.png
-LV_IMG_DECLARE(The_Way_I_Still_Love_You);    // assets/ChangeRoom.png
+LV_IMG_DECLARE(cloud);    // assets/ChangeRoom.png
+LV_IMG_DECLARE(cloudy);    // assets/ChangeRoom.png
+LV_IMG_DECLARE(heavy_rain);    // assets/ChangeRoom.png
+LV_IMG_DECLARE(mid_rain);    // assets/ChangeRoom.png
+LV_IMG_DECLARE(light_rain);    // assets/ChangeRoom.png
 
 // My_Heart_Will_Go_On
 
