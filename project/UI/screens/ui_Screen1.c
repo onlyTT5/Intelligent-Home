@@ -4,6 +4,7 @@
 // Project name: SquareLine_Project
 
 #include "../ui.h"
+#include "ui_time_manager.h"
 
 lv_obj_t *ui_Screen1 = NULL;
 lv_obj_t *ui_entirety = NULL;
@@ -314,7 +315,8 @@ void ui_Screen1_screen_init(void)
     if (obj == NULL)
     {
         printf("parse json failed\n");
-        return -1;
+        close(tcp_socket);
+        return;
     }
 
     // 获取lives数组
@@ -323,7 +325,8 @@ void ui_Screen1_screen_init(void)
     {
         printf("获取lives数组失败\n");
         cJSON_Delete(obj);
-        return -1;
+        close(tcp_socket);
+        return;
     }
 
     // 获取数组大小
@@ -874,7 +877,7 @@ void ui_Screen1_screen_init(void)
     lv_obj_set_x(ui_airTemperature, 0);
     lv_obj_set_y(ui_airTemperature, -5);
     lv_obj_set_align(ui_airTemperature, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_airTemperature, "26°C");
+    lv_label_set_text(ui_airTemperature, "20°C");
     lv_obj_set_style_text_color(ui_airTemperature, lv_color_hex(0xA1A2A6), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_airTemperature, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_airTemperature, &lv_font_montserrat_24, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -962,7 +965,7 @@ void ui_Screen1_screen_init(void)
     lv_obj_set_style_radius(ui_musicInfo, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_musicInfo, lv_color_hex(0x2E3033), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_musicInfo, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_image_src(ui_musicInfo, &ui_img_purple_png, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_image_src(ui_musicInfo, &The_Way_I_Still_Love_You, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_image_opa(ui_musicInfo, 50, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_side(ui_musicInfo, LV_BORDER_SIDE_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -1069,7 +1072,7 @@ void ui_Screen1_screen_init(void)
     lv_obj_set_width(ui_temperatureText, LV_SIZE_CONTENT);  /// 1
     lv_obj_set_height(ui_temperatureText, LV_SIZE_CONTENT); /// 1
     lv_obj_set_align(ui_temperatureText, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_temperatureText, "26°C");
+    lv_label_set_text(ui_temperatureText, "20°C");
     lv_obj_set_style_text_color(ui_temperatureText, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_temperatureText, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_temperatureText, &lv_font_montserrat_28, LV_PART_MAIN | LV_STATE_DEFAULT);

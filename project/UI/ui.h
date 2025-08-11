@@ -7,7 +7,8 @@
 #define _SQUARELINE_PROJECT_UI_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include "lvgl/lvgl.h"
@@ -15,7 +16,7 @@ extern "C" {
 #include "ui_helpers.h"
 #include "ui_events.h"
 
-///////////////////// SCREENS ////////////////////
+    ///////////////////// SCREENS ////////////////////
 
 #include "screens/ui_Screen1.h"
 #include "screens/ui_Screen2.h"
@@ -38,61 +39,62 @@ extern "C" {
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-// EVENTS
+    // EVENTS
 
-extern lv_obj_t * ui____initial_actions0;
+    extern lv_obj_t *ui____initial_actions0;
 
-// IMAGES AND IMAGE SETS
-LV_IMG_DECLARE(ui_img_background_png);    // assets/background.png
-LV_IMG_DECLARE(ui_img_home_png);    // assets/home.png
-LV_IMG_DECLARE(ui_img_sofa_png);    // assets/sofa.png
-LV_IMG_DECLARE(ui_img_sun_png);    // assets/sun.png
-LV_IMG_DECLARE(ui_img_wifi_png);    // assets/wifi.png
-LV_IMG_DECLARE(ui_img_battery_png);    // assets/battery.png
-LV_IMG_DECLARE(ui_img_enter_png);    // assets/enter.png
-LV_IMG_DECLARE(ui_img_bed_png);    // assets/bed.png
-LV_IMG_DECLARE(ui_img_yoga_png);    // assets/yoga.png
-LV_IMG_DECLARE(ui_img_855347034);    // assets/tea-cup.png
-LV_IMG_DECLARE(ui_img_cinema_png);    // assets/cinema.png
-LV_IMG_DECLARE(ui_img_logout_png);    // assets/logout.png
-LV_IMG_DECLARE(ui_img_orange_png);    // assets/orange.png
-LV_IMG_DECLARE(ui_img_blue_png);    // assets/blue.png
-LV_IMG_DECLARE(ui_img_green_png);    // assets/green.png
-LV_IMG_DECLARE(ui_img_purple_png);    // assets/purple.png
-LV_IMG_DECLARE(ui_img_pause_png);    // assets/pause.png
-LV_IMG_DECLARE(ui_img_214448395);    // assets/skip-to-start.png
-LV_IMG_DECLARE(ui_img_end_png);    // assets/end.png
-LV_IMG_DECLARE(ui_img_back_png);    // assets/back.png
-LV_IMG_DECLARE(ui_img_forward_png);    // assets/forward.png
-LV_IMG_DECLARE(ui_img_920086830);    // assets/light-on-click.png
-LV_IMG_DECLARE(ui_img_light_png);    // assets/light.png
-LV_IMG_DECLARE(ui_img_1611275694);    // assets/curtain-click.png
-LV_IMG_DECLARE(ui_img_1850939063);    // assets/window-shade.png
-LV_IMG_DECLARE(light_click);    // assets/ChangeRoom.png
-LV_IMG_DECLARE(light_on);    // assets/ChangeRoom.png
-LV_IMG_DECLARE(window_shade_click);    // assets/ChangeRoom.png
-LV_IMG_DECLARE(curtain);    // assets/ChangeRoom.png
-LV_IMG_DECLARE(play);    // assets/ChangeRoom.png
-LV_IMG_DECLARE(City_Of_Stars);    // assets/ChangeRoom.png
-LV_IMG_DECLARE(My_Heart_Will_Go_On);    // assets/ChangeRoom.png
-LV_IMG_DECLARE(cloud);    // assets/ChangeRoom.png
-LV_IMG_DECLARE(cloudy);    // assets/ChangeRoom.png
-LV_IMG_DECLARE(heavy_rain);    // assets/ChangeRoom.png
-LV_IMG_DECLARE(mid_rain);    // assets/ChangeRoom.png
-LV_IMG_DECLARE(light_rain);    // assets/ChangeRoom.png
+    // IMAGES AND IMAGE SETS
+    LV_IMG_DECLARE(ui_img_background_png);    // assets/background.png
+    LV_IMG_DECLARE(ui_img_home_png);          // assets/home.png
+    LV_IMG_DECLARE(ui_img_sofa_png);          // assets/sofa.png
+    LV_IMG_DECLARE(ui_img_sun_png);           // assets/sun.png
+    LV_IMG_DECLARE(ui_img_wifi_png);          // assets/wifi.png
+    LV_IMG_DECLARE(ui_img_battery_png);       // assets/battery.png
+    LV_IMG_DECLARE(ui_img_enter_png);         // assets/enter.png
+    LV_IMG_DECLARE(ui_img_bed_png);           // assets/bed.png
+    LV_IMG_DECLARE(ui_img_yoga_png);          // assets/yoga.png
+    LV_IMG_DECLARE(ui_img_855347034);         // assets/tea-cup.png
+    LV_IMG_DECLARE(ui_img_cinema_png);        // assets/cinema.png
+    LV_IMG_DECLARE(ui_img_logout_png);        // assets/logout.png
+    LV_IMG_DECLARE(ui_img_orange_png);        // assets/orange.png
+    LV_IMG_DECLARE(ui_img_blue_png);          // assets/blue.png
+    LV_IMG_DECLARE(ui_img_green_png);         // assets/green.png
+    LV_IMG_DECLARE(ui_img_purple_png);        // assets/purple.png
+    LV_IMG_DECLARE(ui_img_pause_png);         // assets/pause.png
+    LV_IMG_DECLARE(ui_img_214448395);         // assets/skip-to-start.png
+    LV_IMG_DECLARE(ui_img_end_png);           // assets/end.png
+    LV_IMG_DECLARE(ui_img_back_png);          // assets/back.png
+    LV_IMG_DECLARE(ui_img_forward_png);       // assets/forward.png
+    LV_IMG_DECLARE(ui_img_920086830);         // assets/light-on-click.png
+    LV_IMG_DECLARE(ui_img_light_png);         // assets/light.png
+    LV_IMG_DECLARE(ui_img_1611275694);        // assets/curtain-click.png
+    LV_IMG_DECLARE(ui_img_1850939063);        // assets/window-shade.png
+    LV_IMG_DECLARE(light_click);              // assets/ChangeRoom.png
+    LV_IMG_DECLARE(light_on);                 // assets/ChangeRoom.png
+    LV_IMG_DECLARE(window_shade_click);       // assets/ChangeRoom.png
+    LV_IMG_DECLARE(curtain);                  // assets/ChangeRoom.png
+    LV_IMG_DECLARE(play);                     // assets/ChangeRoom.png
+    LV_IMG_DECLARE(City_Of_Stars);            // assets/ChangeRoom.png
+    LV_IMG_DECLARE(My_Heart_Will_Go_On);      // assets/ChangeRoom.png
+    LV_IMG_DECLARE(The_Way_I_Still_Love_You); // assets/ChangeRoom.png
+    LV_IMG_DECLARE(cloud);                    // assets/ChangeRoom.png
+    LV_IMG_DECLARE(cloudy);                   // assets/ChangeRoom.png
+    LV_IMG_DECLARE(heavy_rain);               // assets/ChangeRoom.png
+    LV_IMG_DECLARE(mid_rain);                 // assets/ChangeRoom.png
+    LV_IMG_DECLARE(light_rain);               // assets/ChangeRoom.png
 
-// My_Heart_Will_Go_On
+    // My_Heart_Will_Go_On
 
-// FONTS
-LV_FONT_DECLARE(ui_font_Date);
-LV_FONT_DECLARE(ui_font_font16);
-LV_FONT_DECLARE(ui_font_Font18);
-LV_FONT_DECLARE(ui_font_musicMode14);
-LV_FONT_DECLARE(ui_font_musicMode16);
+    // FONTS
+    LV_FONT_DECLARE(ui_font_Date);
+    LV_FONT_DECLARE(ui_font_font16);
+    LV_FONT_DECLARE(ui_font_Font18);
+    LV_FONT_DECLARE(ui_font_musicMode14);
+    LV_FONT_DECLARE(ui_font_musicMode16);
 
-// UI INIT
-void ui_init(void);
-void ui_destroy(void);
+    // UI INIT
+    void ui_init(void);
+    void ui_destroy(void);
 
 #ifdef __cplusplus
 } /*extern "C"*/

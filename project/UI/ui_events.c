@@ -157,7 +157,7 @@ void controlChange6(lv_event_t *e)
 }
 
 // 音乐图片数组
-char *music_images[] = {
+const lv_image_dsc_t *music_images[] = {
 	&City_Of_Stars,
 	&My_Heart_Will_Go_On,
 	&The_Way_I_Still_Love_You};
@@ -200,7 +200,7 @@ void playSong(lv_event_t *e)
 				lv_obj_set_style_bg_image_src(ui_musicInfo, music_images[_index], LV_PART_MAIN | LV_STATE_DEFAULT);
 				lv_label_set_text(ui_songName, music_names[_index]);
 				lv_label_set_text(ui_singer, music_singers[_index]);
-				
+
 				// 第一次播放，启动mplayer
 				startPlay();
 				printf("开始播放音乐\n");
