@@ -186,7 +186,7 @@ void ui_event_play(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        playSong(e);
+        playSong(e, ui_play, ui_musicInfo, ui_songName, ui_singer);
     }
 }
 
@@ -196,7 +196,7 @@ void ui_event_last(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        prevSong(e);
+        prevSong(e, ui_last, ui_musicInfo, ui_songName, ui_singer);
     }
 }
 
@@ -206,7 +206,7 @@ void ui_event_next(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        nextSong(e);
+        nextSong(e, ui_next, ui_musicInfo, ui_songName, ui_singer);
     }
 }
 

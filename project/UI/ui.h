@@ -46,6 +46,8 @@ extern "C"
     extern char weather_str[64]; // 声明
     extern char temp_str[32];    // 声明
 
+    
+
     // IMAGES AND IMAGE SETS
     LV_IMG_DECLARE(ui_img_background_png);    // assets/background.png
     LV_IMG_DECLARE(ui_img_home_png);          // assets/home.png

@@ -185,7 +185,7 @@ void startPlay()
 	}
 }
 
-void playSong(lv_event_t *e)
+void playSong(lv_event_t *e, lv_obj_t *ui_play, lv_obj_t *ui_musicInfo, lv_obj_t *ui_songName, lv_obj_t *ui_singer)
 {
 	lv_event_code_t event_code = lv_event_get_code(e);
 	if (event_code == LV_EVENT_CLICKED)
@@ -223,7 +223,7 @@ void playSong(lv_event_t *e)
 	}
 }
 
-void prevSong(lv_event_t *e)
+void prevSong(lv_event_t *e, lv_obj_t *ui_last, lv_obj_t *ui_musicInfo, lv_obj_t *ui_songName, lv_obj_t *ui_singer)
 {
 	printf("上一首\n");
 	system("killall mplayer"); // 结束当前播放
@@ -243,7 +243,7 @@ void prevSong(lv_event_t *e)
 	startPlay();
 }
 
-void nextSong(lv_event_t *e)
+void nextSong(lv_event_t *e, lv_obj_t *ui_next, lv_obj_t *ui_musicInfo, lv_obj_t *ui_songName, lv_obj_t *ui_singer)
 {
 	printf("下一首\n");
 	system("killall mplayer"); // 结束当前播放

@@ -176,7 +176,7 @@ void ui_event_play1(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        playSong(e);
+        playSong(e, ui_play1, ui_musicInfo1, ui_songName1, ui_singer1);
     }
 }
 
@@ -186,7 +186,7 @@ void ui_event_last1(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        prevSong(e);
+        prevSong(e, ui_last1, ui_musicInfo1, ui_songName1, ui_singer1);
     }
 }
 
@@ -196,7 +196,7 @@ void ui_event_next1(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        nextSong(e);
+        nextSong(e, ui_next1, ui_musicInfo1, ui_songName1, ui_singer1);
     }
 }
 
@@ -874,7 +874,7 @@ void ui_Screen2_screen_init(void)
     lv_obj_set_style_radius(ui_musicInfo1, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(ui_musicInfo1, lv_color_hex(0x2E3033), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_musicInfo1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_image_src(ui_musicInfo1, &ui_img_purple_png, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_image_src(ui_musicInfo1, &The_Way_I_Still_Love_You, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_image_opa(ui_musicInfo1, 50, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_border_side(ui_musicInfo1, LV_BORDER_SIDE_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -920,7 +920,7 @@ void ui_Screen2_screen_init(void)
     lv_obj_set_style_border_side(ui_playControl1, LV_BORDER_SIDE_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_play1 = lv_image_create(ui_playControl1);
-    lv_image_set_src(ui_play1, &ui_img_pause_png);
+    lv_image_set_src(ui_play1, &play);
     lv_obj_set_width(ui_play1, LV_SIZE_CONTENT);  /// 1
     lv_obj_set_height(ui_play1, LV_SIZE_CONTENT); /// 1
     lv_obj_set_align(ui_play1, LV_ALIGN_CENTER);

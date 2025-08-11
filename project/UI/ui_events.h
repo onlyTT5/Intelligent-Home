@@ -20,9 +20,9 @@ extern "C"
     void controlChange4(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider);
     void controlChange5(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider);
     void controlChange6(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider);
-    void playSong(lv_event_t *e);
-    void prevSong(lv_event_t *e);
-    void nextSong(lv_event_t *e);
+    void playSong(lv_event_t *e, lv_obj_t *ui_play, lv_obj_t *ui_musicInfo, lv_obj_t *ui_songName, lv_obj_t *ui_singer);
+    void prevSong(lv_event_t *e, lv_obj_t *ui_last, lv_obj_t *ui_musicInfo, lv_obj_t *ui_songName, lv_obj_t *ui_singer);
+    void nextSong(lv_event_t *e, lv_obj_t *ui_next, lv_obj_t *ui_musicInfo, lv_obj_t *ui_songName, lv_obj_t *ui_singer);
     void decreaseTemp(lv_event_t *e, lv_obj_t *ui_airTemperature, lv_obj_t *ui_temperatureText);
     void increaseTemp(lv_event_t *e, lv_obj_t *ui_airTemperature, lv_obj_t *ui_temperatureText);
     void lightAllOn(lv_event_t *e, lv_obj_t *lightOnImg, lv_obj_t *lightOffImg, lv_obj_t *lightSliderValue, lv_obj_t *lightSlider);

@@ -4,6 +4,8 @@
 // Project name: SquareLine_Project
 
 #include "../ui.h"
+#include "ui_time_manager.h"
+#include "ui_weather.h"
 
 lv_obj_t *ui_Screen3 = NULL;
 lv_obj_t *ui_entirety2 = NULL;
@@ -174,7 +176,7 @@ void ui_event_play2(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        playSong(e);
+        playSong(e, ui_play2, ui_musicInfo2, ui_songName2, ui_singer2);
     }
 }
 
@@ -184,7 +186,7 @@ void ui_event_last2(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        prevSong(e);
+        prevSong(e, ui_last2, ui_musicInfo2, ui_songName2, ui_singer2);
     }
 }
 
@@ -194,7 +196,7 @@ void ui_event_next2(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        nextSong(e);
+        nextSong(e, ui_next2, ui_musicInfo2, ui_songName2, ui_singer2);
     }
 }
 
@@ -1109,10 +1111,19 @@ void ui_Screen3_screen_init(void)
     lv_obj_add_event_cb(ui_lightOffImg2, ui_event_lightOffImg2, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_curtainOnImg2, ui_event_curtainOnImg2, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_curtainOffImg2, ui_event_curtainOffImg2, LV_EVENT_ALL, NULL);
+
+    // 注册时间和日期标签到时间管理器
+    ui_time_manager_register_labels(ui_Time2, ui_Date2);
+
+    // 创建一个管道文件
+    mkfifo("/home/gec/pipe", 0777);
 }
 
 void ui_Screen3_screen_destroy(void)
 {
+    // 从时间管理器中注销时间标签
+    ui_time_manager_unregister_labels(ui_Time2, ui_Date2);
+
     if (ui_Screen3)
         lv_obj_del(ui_Screen3);
 
