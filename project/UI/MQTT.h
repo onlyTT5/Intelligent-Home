@@ -15,3 +15,5 @@ void on_message(struct mosquitto *obj, void *arg, const struct mosquitto_message
 int MQTT_init();
 
 int MQTT_push();
+
+void mqtt_ui_timer_init();

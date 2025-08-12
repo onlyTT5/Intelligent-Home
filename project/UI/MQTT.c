@@ -1,5 +1,90 @@
 #include "MQTT.h"
 #include "./ui.h"
+
+// 全局变量，用于在MQTT回调和UI线程间传递数据
+typedef struct
+{
+    char music_action[10];   // "next", "prev", "on", "off"
+    char light_action[10];   // "on", "off"
+    char curtain_action[10]; // "on", "off"
+    int need_update;         // 标记是否需要更新UI
+} mqtt_ui_data_t;
+
+static mqtt_ui_data_t g_mqtt_data = {0};
+
+// UI更新定时器回调函数（运行在UI线程中，安全）
+static void ui_update_timer_cb(lv_timer_t *timer)
+{
+    if (!g_mqtt_data.need_update)
+    {
+        return;
+    }
+
+    // 处理音乐控制
+    if (strlen(g_mqtt_data.music_action) > 0)
+    {
+        if (strcmp(g_mqtt_data.music_action, "next") == 0)
+        {
+            nextSong(NULL, ui_next, ui_musicInfo, ui_songName, ui_singer);
+        }
+        else if (strcmp(g_mqtt_data.music_action, "prev") == 0)
+        {
+            prevSong(NULL, ui_last, ui_musicInfo, ui_songName, ui_singer);
+        }
+        else if (strcmp(g_mqtt_data.music_action, "on") == 0)
+        {
+            playSong(NULL, ui_play, ui_musicInfo, ui_songName, ui_singer);
+        }
+        else if (strcmp(g_mqtt_data.music_action, "off") == 0)
+        {
+            playSong(NULL, ui_play, ui_musicInfo, ui_songName, ui_singer);
+        }
+        memset(g_mqtt_data.music_action, 0, sizeof(g_mqtt_data.music_action));
+    }
+
+    // 处理灯光控制
+    if (strlen(g_mqtt_data.light_action) > 0)
+    {
+        if (strcmp(g_mqtt_data.light_action, "on") == 0)
+        {
+            lightAllOn(NULL, ui_lightOnImg, ui_lightOffImg, ui_lightSliderValue, ui_lightSlider);
+        }
+        else if (strcmp(g_mqtt_data.light_action, "off") == 0)
+        {
+            lightAllOff(NULL, ui_lightOnImg, ui_lightOffImg, ui_lightSliderValue, ui_lightSlider);
+        }
+        memset(g_mqtt_data.light_action, 0, sizeof(g_mqtt_data.light_action));
+    }
+
+    // 处理窗帘控制
+    if (strlen(g_mqtt_data.curtain_action) > 0)
+    {
+        if (strcmp(g_mqtt_data.curtain_action, "on") == 0)
+        {
+            printf("安全执行窗帘开启\n");
+            curtainAllOn(NULL, ui_curtainOnImg, ui_curtainOffImg);
+        }
+        else if (strcmp(g_mqtt_data.curtain_action, "off") == 0)
+        {
+            printf("安全执行窗帘关闭\n");
+            curtainAllOff(NULL, ui_curtainOnImg, ui_curtainOffImg);
+        }
+        memset(g_mqtt_data.curtain_action, 0, sizeof(g_mqtt_data.curtain_action));
+    }
+
+    g_mqtt_data.need_update = 0;
+}
+
+// 初始化UI更新定时器
+void mqtt_ui_timer_init()
+{
+    static lv_timer_t *ui_timer = NULL;
+    if (ui_timer == NULL)
+    {
+        // 创建一个50ms的定时器，用于安全更新UI
+        ui_timer = lv_timer_create(ui_update_timer_cb, 50, NULL);
+    }
+}
 /*
 消息回调函数参数解析
 obj:客户端对象地址
@@ -11,20 +96,10 @@ struct mosquitto *pub_obj = NULL; // 全局发布客户端对象
 
 void on_message(struct mosquitto *obj, void *arg, const struct mosquitto_message *msg)
 {
-    // printf("主题：%s\n", msg->topic);
-    // printf("消息：%s\n", (char *)msg->payload);
-    // printf("消息长度：%d\n", msg->payloadlen);
-    // printf("消息Qos:%d\n", msg->qos);
-    // printf("消息是否保留：%d\n", msg->retain);
-
     char buf[1024] = {0};
-    // 将消息内容转换为字符串
     snprintf(buf, sizeof(buf), "%s", (char *)msg->payload);
 
-    // printf("准备解析JSON: %s\n", buf);
-
     cJSON *objs = cJSON_Parse(buf);
-
     cJSON *Living_Room_obj = cJSON_GetObjectItem(objs, "Living Room");
     if (Living_Room_obj != NULL)
     {
@@ -40,39 +115,31 @@ void on_message(struct mosquitto *obj, void *arg, const struct mosquitto_message
         char *music = cJSON_GetStringValue(Living_Room_music);
         char *air = cJSON_GetStringValue(Living_Room_air);
 
-        // 灯光处理
-        if (light != NULL && strcmp(light, "on") == 0)
+        // 线程安全：只设置标志，不直接操作UI
+        if (light != NULL)
         {
-            lightAllOn(NULL, ui_lightOnImg, ui_lightOffImg, ui_lightSliderValue, ui_lightSlider);
-        }
-        else if (light != NULL && strcmp(light, "off") == 0)
-        {
-            lightAllOff(NULL, ui_lightOnImg, ui_lightOffImg, ui_lightSliderValue, ui_lightSlider);
+            printf("设置灯光动作: %s\n", light);
+            strncpy(g_mqtt_data.light_action, light, sizeof(g_mqtt_data.light_action) - 1);
+            g_mqtt_data.need_update = 1;
         }
 
-        // 窗帘处理
-        if (curtain != NULL && strcmp(curtain, "on") == 0)
+        if (curtain != NULL)
         {
-            curtainAllOn(NULL, ui_curtainOnImg, ui_curtainOffImg);
-        }
-        else if (curtain != NULL && strcmp(curtain, "off") == 0)
-        {
-            curtainAllOff(NULL, ui_curtainOnImg, ui_curtainOffImg);
+            printf("设置窗帘动作: %s\n", curtain);
+            strncpy(g_mqtt_data.curtain_action, curtain, sizeof(g_mqtt_data.curtain_action) - 1);
+            g_mqtt_data.need_update = 1;
         }
 
-        // 音乐处理
-        if (music != NULL && strcmp(music, "on") == 0)
+        if (music != NULL)
         {
-            playSong(NULL, ui_play, ui_musicInfo, ui_songName, ui_singer);
+            printf("设置音乐动作: %s\n", music);
+            strncpy(g_mqtt_data.music_action, music, sizeof(g_mqtt_data.music_action) - 1);
+            g_mqtt_data.need_update = 1;
         }
-        else if (music != NULL && strcmp(music, "off") == 0)
-        {
-            playSong(NULL, ui_play, ui_musicInfo, ui_songName, ui_singer);
-        }
+
         
     }
 
-    // 释放JSON对象内存
     cJSON_Delete(objs);
 }
 
@@ -144,6 +211,9 @@ int MQTT_init()
 
     // 启动消息循环处理（非阻塞模式）
     mosquitto_loop_start(sub_obj);
+
+    // 初始化UI更新定时器
+    mqtt_ui_timer_init();
 
     printf("MQTT客户端启动成功！\n");
     return 0;

@@ -230,10 +230,13 @@ void playSong(lv_event_t *e, lv_obj_t *ui_play, lv_obj_t *ui_musicInfo, lv_obj_t
 void prevSong(lv_event_t *e, lv_obj_t *ui_last, lv_obj_t *ui_musicInfo, lv_obj_t *ui_songName, lv_obj_t *ui_singer)
 {
 	lv_event_code_t event_code = LV_EVENT_CLICKED; // 默认为点击事件
+
+	// 如果事件不为NULL，获取真实的事件代码
 	if (e != NULL)
 	{
-		lv_event_code_t event_code = lv_event_get_code(e);
+		event_code = lv_event_get_code(e);
 	}
+
 	if (event_code == LV_EVENT_CLICKED)
 	{
 		printf("上一首\n");
@@ -258,10 +261,13 @@ void prevSong(lv_event_t *e, lv_obj_t *ui_last, lv_obj_t *ui_musicInfo, lv_obj_t
 void nextSong(lv_event_t *e, lv_obj_t *ui_next, lv_obj_t *ui_musicInfo, lv_obj_t *ui_songName, lv_obj_t *ui_singer)
 {
 	lv_event_code_t event_code = LV_EVENT_CLICKED; // 默认为点击事件
+
+	// 如果事件不为NULL，获取真实的事件代码
 	if (e != NULL)
 	{
-		lv_event_code_t event_code = lv_event_get_code(e);
+		event_code = lv_event_get_code(e);
 	}
+
 	if (event_code == LV_EVENT_CLICKED)
 	{
 		printf("下一首\n");
