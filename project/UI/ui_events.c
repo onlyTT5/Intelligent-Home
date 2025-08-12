@@ -64,8 +64,14 @@ void *playMusic(void *arg)
 // 点击切换空调状态
 void airOnOffText(lv_event_t *e, lv_obj_t *ui_airTemperature, lv_obj_t *ui_temperatureText)
 {
-	lv_event_code_t event_code = lv_event_get_code(e);
-	static int airOn = 1; // 0表示关闭，1表示开启
+	lv_event_code_t event_code = LV_EVENT_CLICKED; // 默认为点击事件
+	static int airOn = 1;						   // 0表示关闭，1表示开启
+
+	// 如果事件不为NULL，获取真实的事件代码
+	if (e != NULL)
+	{
+		event_code = lv_event_get_code(e);
+	}
 
 	if (event_code == LV_EVENT_CLICKED)
 	{
@@ -81,6 +87,23 @@ void airOnOffText(lv_event_t *e, lv_obj_t *ui_airTemperature, lv_obj_t *ui_tempe
 			lv_label_set_text(ui_temperatureText, "Start");
 			lv_label_set_text(ui_airTemperature, "Start");
 		}
+	}
+}
+
+// 专用于MQTT控制的空调函数
+void airOnOffControl(lv_event_t *e, lv_obj_t *ui_airTemperature, lv_obj_t *ui_temperatureText, int state)
+{
+	if (state == 1) // 开启空调
+	{
+		printf("MQTT控制：开启空调\n");
+		lv_label_set_text(ui_temperatureText, "20°C");
+		lv_label_set_text(ui_airTemperature, "20°C");
+	}
+	else // 关闭空调
+	{
+		printf("MQTT控制：关闭空调\n");
+		lv_label_set_text(ui_temperatureText, "Start");
+		lv_label_set_text(ui_airTemperature, "Start");
 	}
 }
 
@@ -292,6 +315,11 @@ void nextSong(lv_event_t *e, lv_obj_t *ui_next, lv_obj_t *ui_musicInfo, lv_obj_t
 // 减少温度事件
 void decreaseTemp(lv_event_t *e, lv_obj_t *ui_airTemperature, lv_obj_t *ui_temperatureText)
 {
+	lv_event_code_t event_code = LV_EVENT_CLICKED; // 默认为点击事件
+	if (e != NULL)
+	{
+		event_code = lv_event_get_code(e);
+	}
 	// 获取温度标签文本
 	char *buf = lv_label_get_text(ui_airTemperature);
 	char *degree_sign = strstr(buf, "°C");
@@ -299,7 +327,7 @@ void decreaseTemp(lv_event_t *e, lv_obj_t *ui_airTemperature, lv_obj_t *ui_tempe
 	int temp = atoi(buf);
 	if (temp > 16) // 假设温度范围为16°C到30°C
 		temp -= 1;
-	lv_event_code_t event_code = lv_event_get_code(e);
+
 	if (event_code == LV_EVENT_CLICKED)
 	{
 		// 设置新的温度文本
@@ -317,6 +345,11 @@ void decreaseTemp(lv_event_t *e, lv_obj_t *ui_airTemperature, lv_obj_t *ui_tempe
 
 void increaseTemp(lv_event_t *e, lv_obj_t *ui_airTemperature, lv_obj_t *ui_temperatureText)
 {
+	lv_event_code_t event_code = LV_EVENT_CLICKED; // 默认为点击事件
+	if (e != NULL)
+	{
+		event_code = lv_event_get_code(e);
+	}
 	// 获取温度标签文本
 	char *buf = lv_label_get_text(ui_airTemperature);
 	char *degree_sign = strstr(buf, "°C");
@@ -324,7 +357,7 @@ void increaseTemp(lv_event_t *e, lv_obj_t *ui_airTemperature, lv_obj_t *ui_tempe
 	int temp = atoi(buf);
 	if (temp < 30)
 		temp += 1;
-	lv_event_code_t event_code = lv_event_get_code(e);
+
 	if (event_code == LV_EVENT_CLICKED)
 	{
 		// 设置新的温度文本

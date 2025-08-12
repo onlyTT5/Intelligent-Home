@@ -7,6 +7,7 @@ typedef struct
     char music_action[10];   // "next", "prev", "on", "off"
     char light_action[10];   // "on", "off"
     char curtain_action[10]; // "on", "off"
+    char air_action[10];     // "on", "off"
     int need_update;         // 标记是否需要更新UI
 } mqtt_ui_data_t;
 
@@ -61,15 +62,35 @@ static void ui_update_timer_cb(lv_timer_t *timer)
     {
         if (strcmp(g_mqtt_data.curtain_action, "on") == 0)
         {
-            printf("安全执行窗帘开启\n");
             curtainAllOn(NULL, ui_curtainOnImg, ui_curtainOffImg);
         }
         else if (strcmp(g_mqtt_data.curtain_action, "off") == 0)
         {
-            printf("安全执行窗帘关闭\n");
             curtainAllOff(NULL, ui_curtainOnImg, ui_curtainOffImg);
         }
         memset(g_mqtt_data.curtain_action, 0, sizeof(g_mqtt_data.curtain_action));
+    }
+
+    // 处理空调控制
+    if (strlen(g_mqtt_data.air_action) > 0)
+    {
+        if (strcmp(g_mqtt_data.air_action, "on") == 0)
+        {
+            airOnOffControl(NULL, ui_airTemperature, ui_temperatureText, 1); // 1表示开启
+        }
+        else if (strcmp(g_mqtt_data.air_action, "off") == 0)
+        {
+            airOnOffControl(NULL, ui_airTemperature, ui_temperatureText, 0); // 0表示关闭
+        }
+        else if (strcmp(g_mqtt_data.air_action, "increase") == 0)
+        {
+            increaseTemp(NULL, ui_airTemperature, ui_temperatureText);
+        }
+        else if (strcmp(g_mqtt_data.air_action, "decrease") == 0)
+        {
+            decreaseTemp(NULL, ui_airTemperature, ui_temperatureText);
+        }
+        memset(g_mqtt_data.air_action, 0, sizeof(g_mqtt_data.air_action));
     }
 
     g_mqtt_data.need_update = 0;
@@ -101,6 +122,8 @@ void on_message(struct mosquitto *obj, void *arg, const struct mosquitto_message
 
     cJSON *objs = cJSON_Parse(buf);
     cJSON *Living_Room_obj = cJSON_GetObjectItem(objs, "Living Room");
+    cJSON *Room1_obj = cJSON_GetObjectItem(objs, "Room 1");
+    cJSON *Room2_obj = cJSON_GetObjectItem(objs, "Room 2");
     if (Living_Room_obj != NULL)
     {
         printf("找到客厅\n");
@@ -137,7 +160,55 @@ void on_message(struct mosquitto *obj, void *arg, const struct mosquitto_message
             g_mqtt_data.need_update = 1;
         }
 
-        
+        if (air != NULL)
+        {
+            printf("设置空调动作: %s\n", air);
+            strncpy(g_mqtt_data.air_action, air, sizeof(g_mqtt_data.air_action) - 1);
+            g_mqtt_data.need_update = 1;
+        }
+    }
+    if (Room1_obj != NULL)
+    {
+        printf("找到主卧\n");
+
+        cJSON *Room1_light = cJSON_GetObjectItem(Room1_obj, "light");
+        cJSON *Room1_curtain = cJSON_GetObjectItem(Room1_obj, "curtain");
+        cJSON *Room1_music = cJSON_GetObjectItem(Room1_obj, "music");
+        cJSON *Room1_air = cJSON_GetObjectItem(Room1_obj, "air");
+
+        char *light = cJSON_GetStringValue(Room1_light);
+        char *curtain = cJSON_GetStringValue(Room1_curtain);
+        char *music = cJSON_GetStringValue(Room1_music);
+        char *air = cJSON_GetStringValue(Room1_air);
+
+        // 线程安全：只设置标志，不直接操作UI
+        if (light != NULL)
+        {
+            printf("设置灯光动作: %s\n", light);
+            strncpy(g_mqtt_data.light_action, light, sizeof(g_mqtt_data.light_action) - 1);
+            g_mqtt_data.need_update = 1;
+        }
+
+        if (curtain != NULL)
+        {
+            printf("设置窗帘动作: %s\n", curtain);
+            strncpy(g_mqtt_data.curtain_action, curtain, sizeof(g_mqtt_data.curtain_action) - 1);
+            g_mqtt_data.need_update = 1;
+        }
+
+        if (music != NULL)
+        {
+            printf("设置音乐动作: %s\n", music);
+            strncpy(g_mqtt_data.music_action, music, sizeof(g_mqtt_data.music_action) - 1);
+            g_mqtt_data.need_update = 1;
+        }
+
+        if (air != NULL)
+        {
+            printf("设置空调动作: %s\n", air);
+            strncpy(g_mqtt_data.air_action, air, sizeof(g_mqtt_data.air_action) - 1);
+            g_mqtt_data.need_update = 1;
+        }
     }
 
     cJSON_Delete(objs);

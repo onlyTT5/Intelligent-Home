@@ -14,6 +14,7 @@ extern "C"
 #endif
 
     void airOnOffText(lv_event_t *e, lv_obj_t *ui_airTemperature, lv_obj_t *ui_temperatureText);
+    void airOnOffControl(lv_event_t *e, lv_obj_t *ui_airTemperature, lv_obj_t *ui_temperatureText, int state);
     void controlChange1(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider);
     void controlChange2(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider);
     void controlChange3(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider);
