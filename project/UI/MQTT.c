@@ -43,30 +43,33 @@ void on_message(struct mosquitto *obj, void *arg, const struct mosquitto_message
         // 灯光处理
         if (light != NULL && strcmp(light, "on") == 0)
         {
-            lv_image_set_src(ui_lightOnImg, &ui_img_920086830);
-            lv_image_set_src(ui_lightOffImg, &ui_img_light_png);
-            lv_label_set_text(ui_lightSliderValue, "50%");
-            lv_slider_set_value(ui_lightSlider, 50, LV_ANIM_OFF);
+            lightAllOn(NULL, ui_lightOnImg, ui_lightOffImg, ui_lightSliderValue, ui_lightSlider);
         }
         else if (light != NULL && strcmp(light, "off") == 0)
         {
-            lv_image_set_src(ui_lightOnImg, &light_on);
-            lv_image_set_src(ui_lightOffImg, &light_click);
-            lv_label_set_text(ui_lightSliderValue, "0%");
-            lv_slider_set_value(ui_lightSlider, 0, LV_ANIM_OFF);
+            lightAllOff(NULL, ui_lightOnImg, ui_lightOffImg, ui_lightSliderValue, ui_lightSlider);
         }
 
         // 窗帘处理
         if (curtain != NULL && strcmp(curtain, "on") == 0)
         {
-            lv_image_set_src(ui_curtainOnImg, &ui_img_1611275694);
-            lv_image_set_src(ui_curtainOffImg, &ui_img_1850939063);
+            curtainAllOn(NULL, ui_curtainOnImg, ui_curtainOffImg);
         }
         else if (curtain != NULL && strcmp(curtain, "off") == 0)
         {
-            lv_image_set_src(ui_curtainOnImg, &ui_img_1850939063);
-            lv_image_set_src(ui_curtainOffImg, &ui_img_1611275694);
+            curtainAllOff(NULL, ui_curtainOnImg, ui_curtainOffImg);
         }
+
+        // 音乐处理
+        if (music != NULL && strcmp(music, "on") == 0)
+        {
+            playSong(NULL, ui_play, ui_musicInfo, ui_songName, ui_singer);
+        }
+        else if (music != NULL && strcmp(music, "off") == 0)
+        {
+            playSong(NULL, ui_play, ui_musicInfo, ui_songName, ui_singer);
+        }
+        
     }
 
     // 释放JSON对象内存

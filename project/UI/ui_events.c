@@ -187,7 +187,11 @@ void startPlay()
 
 void playSong(lv_event_t *e, lv_obj_t *ui_play, lv_obj_t *ui_musicInfo, lv_obj_t *ui_songName, lv_obj_t *ui_singer)
 {
-	lv_event_code_t event_code = lv_event_get_code(e);
+	lv_event_code_t event_code = LV_EVENT_CLICKED; // 默认为点击事件
+	if (e != NULL)
+	{
+		lv_event_code_t event_code = lv_event_get_code(e);
+	}
 	if (event_code == LV_EVENT_CLICKED)
 	{
 		if (is_playing == 0)
@@ -225,42 +229,58 @@ void playSong(lv_event_t *e, lv_obj_t *ui_play, lv_obj_t *ui_musicInfo, lv_obj_t
 
 void prevSong(lv_event_t *e, lv_obj_t *ui_last, lv_obj_t *ui_musicInfo, lv_obj_t *ui_songName, lv_obj_t *ui_singer)
 {
-	printf("上一首\n");
-	system("killall mplayer"); // 结束当前播放
-	music_initialized = 0;	   // 重置初始化状态
-	_index--;
-	if (_index < 0)
+	lv_event_code_t event_code = LV_EVENT_CLICKED; // 默认为点击事件
+	if (e != NULL)
 	{
-		_index = 2;
+		lv_event_code_t event_code = lv_event_get_code(e);
 	}
-	lv_obj_set_style_bg_image_src(ui_musicInfo, music_images[_index], LV_PART_MAIN | LV_STATE_DEFAULT);
-	lv_label_set_text(ui_songName, music_names[_index]);
-	lv_label_set_text(ui_singer, music_singers[_index]);
+	if (event_code == LV_EVENT_CLICKED)
+	{
+		printf("上一首\n");
+		system("killall mplayer"); // 结束当前播放
+		music_initialized = 0;	   // 重置初始化状态
+		_index--;
+		if (_index < 0)
+		{
+			_index = num - 1;
+		}
+		// 切换歌曲后自动开始播放
+		is_playing = 1; // 设置播放状态
+		lv_obj_set_style_bg_image_src(ui_musicInfo, music_images[_index], LV_PART_MAIN | LV_STATE_DEFAULT);
+		lv_label_set_text(ui_songName, music_names[_index]);
+		lv_label_set_text(ui_singer, music_singers[_index]);
 
-	// 切换歌曲后自动开始播放
-	is_playing = 1;								  // 设置播放状态
-	lv_image_set_src(ui_play, &ui_img_pause_png); // 播放时显示暂停图标
-	startPlay();
+		lv_image_set_src(ui_play, &ui_img_pause_png); // 播放时显示暂停图标
+		startPlay();
+	}
 }
 
 void nextSong(lv_event_t *e, lv_obj_t *ui_next, lv_obj_t *ui_musicInfo, lv_obj_t *ui_songName, lv_obj_t *ui_singer)
 {
-	printf("下一首\n");
-	system("killall mplayer"); // 结束当前播放
-	music_initialized = 0;	   // 重置初始化状态
-	_index++;
-	if (_index >= num)
+	lv_event_code_t event_code = LV_EVENT_CLICKED; // 默认为点击事件
+	if (e != NULL)
 	{
-		_index = 0;
+		lv_event_code_t event_code = lv_event_get_code(e);
 	}
-	// 切换歌曲后自动开始播放
-	is_playing = 1; // 设置播放状态
-	lv_obj_set_style_bg_image_src(ui_musicInfo, music_images[_index], LV_PART_MAIN | LV_STATE_DEFAULT);
-	lv_label_set_text(ui_songName, music_names[_index]);
-	lv_label_set_text(ui_singer, music_singers[_index]);
+	if (event_code == LV_EVENT_CLICKED)
+	{
+		printf("下一首\n");
+		system("killall mplayer"); // 结束当前播放
+		music_initialized = 0;	   // 重置初始化状态
+		_index++;
+		if (_index >= num)
+		{
+			_index = 0;
+		}
+		// 切换歌曲后自动开始播放
+		is_playing = 1; // 设置播放状态
+		lv_obj_set_style_bg_image_src(ui_musicInfo, music_images[_index], LV_PART_MAIN | LV_STATE_DEFAULT);
+		lv_label_set_text(ui_songName, music_names[_index]);
+		lv_label_set_text(ui_singer, music_singers[_index]);
 
-	lv_image_set_src(ui_play, &ui_img_pause_png); // 播放时显示暂停图标
-	startPlay();
+		lv_image_set_src(ui_play, &ui_img_pause_png); // 播放时显示暂停图标
+		startPlay();
+	}
 }
 
 // 减少温度事件
@@ -316,7 +336,14 @@ void increaseTemp(lv_event_t *e, lv_obj_t *ui_airTemperature, lv_obj_t *ui_tempe
 // 灯全开全关事件
 void lightAllOn(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider)
 {
-	lv_event_code_t event_code = lv_event_get_code(e);
+	lv_event_code_t event_code = LV_EVENT_CLICKED; // 默认为点击事件
+
+	// 如果事件不为NULL，获取真实的事件代码
+	if (e != NULL)
+	{
+		event_code = lv_event_get_code(e);
+	}
+
 	if (event_code == LV_EVENT_CLICKED)
 	{
 		lv_image_set_src(ui_lightOnImg, &ui_img_920086830);
@@ -328,7 +355,14 @@ void lightAllOn(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg
 
 void lightAllOff(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider)
 {
-	lv_event_code_t event_code = lv_event_get_code(e);
+	lv_event_code_t event_code = LV_EVENT_CLICKED; // 默认为点击事件
+
+	// 如果事件不为NULL，获取真实的事件代码
+	if (e != NULL)
+	{
+		event_code = lv_event_get_code(e);
+	}
+
 	if (event_code == LV_EVENT_CLICKED)
 	{
 		lv_image_set_src(ui_lightOnImg, &light_on);
@@ -340,7 +374,14 @@ void lightAllOff(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffIm
 
 void curtainAllOn(lv_event_t *e, lv_obj_t *ui_curtainOnImg, lv_obj_t *ui_curtainOffImg)
 {
-	lv_event_code_t event_code = lv_event_get_code(e);
+	lv_event_code_t event_code = LV_EVENT_CLICKED; // 默认为点击事件
+
+	// 如果事件不为NULL，获取真实的事件代码
+	if (e != NULL)
+	{
+		event_code = lv_event_get_code(e);
+	}
+
 	if (event_code == LV_EVENT_CLICKED)
 	{
 		lv_image_set_src(ui_curtainOnImg, &ui_img_1611275694);
@@ -350,7 +391,14 @@ void curtainAllOn(lv_event_t *e, lv_obj_t *ui_curtainOnImg, lv_obj_t *ui_curtain
 
 void curtainAllOff(lv_event_t *e, lv_obj_t *ui_curtainOnImg, lv_obj_t *ui_curtainOffImg)
 {
-	lv_event_code_t event_code = lv_event_get_code(e);
+	lv_event_code_t event_code = LV_EVENT_CLICKED; // 默认为点击事件
+
+	// 如果事件不为NULL，获取真实的事件代码
+	if (e != NULL)
+	{
+		event_code = lv_event_get_code(e);
+	}
+
 	if (event_code == LV_EVENT_CLICKED)
 	{
 		lv_image_set_src(ui_curtainOnImg, &curtain);
