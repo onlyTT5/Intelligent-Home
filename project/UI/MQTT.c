@@ -1,6 +1,5 @@
-#include "./ui.h"
 #include "MQTT.h"
-
+#include "./ui.h"
 /*
 消息回调函数参数解析
 obj:客户端对象地址
@@ -12,21 +11,66 @@ struct mosquitto *pub_obj = NULL; // 全局发布客户端对象
 
 void on_message(struct mosquitto *obj, void *arg, const struct mosquitto_message *msg)
 {
-    printf("主题：%s\n", msg->topic);
-    printf("消息：%s\n", (char *)msg->payload);
-    printf("消息长度：%d\n", msg->payloadlen);
-    printf("消息Qos:%d\n", msg->qos);
-    printf("消息是否保留：%d\n", msg->retain);
+    // printf("主题：%s\n", msg->topic);
+    // printf("消息：%s\n", (char *)msg->payload);
+    // printf("消息长度：%d\n", msg->payloadlen);
+    // printf("消息Qos:%d\n", msg->qos);
+    // printf("消息是否保留：%d\n", msg->retain);
 
     char buf[1024] = {0};
     // 将消息内容转换为字符串
     snprintf(buf, sizeof(buf), "%s", (char *)msg->payload);
 
-    cJSON *objs = cJSON_Parse(buf);
-    if (objs == NULL)
-        return; // 添加空指针检查
+    // printf("准备解析JSON: %s\n", buf);
 
-    
+    cJSON *objs = cJSON_Parse(buf);
+
+    cJSON *Living_Room_obj = cJSON_GetObjectItem(objs, "Living Room");
+    if (Living_Room_obj != NULL)
+    {
+        printf("找到客厅\n");
+
+        cJSON *Living_Room_light = cJSON_GetObjectItem(Living_Room_obj, "light");
+        cJSON *Living_Room_curtain = cJSON_GetObjectItem(Living_Room_obj, "curtain");
+        cJSON *Living_Room_music = cJSON_GetObjectItem(Living_Room_obj, "music");
+        cJSON *Living_Room_air = cJSON_GetObjectItem(Living_Room_obj, "air");
+
+        char *light = cJSON_GetStringValue(Living_Room_light);
+        char *curtain = cJSON_GetStringValue(Living_Room_curtain);
+        char *music = cJSON_GetStringValue(Living_Room_music);
+        char *air = cJSON_GetStringValue(Living_Room_air);
+
+        // 灯光处理
+        if (light != NULL && strcmp(light, "on") == 0)
+        {
+            lv_image_set_src(ui_lightOnImg, &ui_img_920086830);
+            lv_image_set_src(ui_lightOffImg, &ui_img_light_png);
+            lv_label_set_text(ui_lightSliderValue, "50%");
+            lv_slider_set_value(ui_lightSlider, 50, LV_ANIM_OFF);
+        }
+        else if (light != NULL && strcmp(light, "off") == 0)
+        {
+            lv_image_set_src(ui_lightOnImg, &light_on);
+            lv_image_set_src(ui_lightOffImg, &light_click);
+            lv_label_set_text(ui_lightSliderValue, "0%");
+            lv_slider_set_value(ui_lightSlider, 0, LV_ANIM_OFF);
+        }
+
+        // 窗帘处理
+        if (curtain != NULL && strcmp(curtain, "on") == 0)
+        {
+            lv_image_set_src(ui_curtainOnImg, &ui_img_1611275694);
+            lv_image_set_src(ui_curtainOffImg, &ui_img_1850939063);
+        }
+        else if (curtain != NULL && strcmp(curtain, "off") == 0)
+        {
+            lv_image_set_src(ui_curtainOnImg, &ui_img_1850939063);
+            lv_image_set_src(ui_curtainOffImg, &ui_img_1611275694);
+        }
+    }
+
+    // 释放JSON对象内存
+    cJSON_Delete(objs);
 }
 
 int MQTT_push()
@@ -52,47 +96,6 @@ int MQTT_push()
     else
     {
         printf("连接MQTT服务器成功！\n");
-    }
-
-    // 4.启动事件处理线程
-    mosquitto_loop_start(pub_obj);
-
-    while (1)
-    {
-        sleep(1);
-        int rand = random() % 100; // 快速产生随机数
-
-        char buf[100] = {0};
-        sprintf(buf, "温度: %d\n", rand);
-
-        // 发布消息
-        mosquitto_publish(pub_obj, NULL, "IntelligentHome", strlen(buf), buf, 0, false);
-    }
-
-    // 每当ui_heaterSlider发生改变，传送ui_heaterTemp
-}
-
-// 发送温度数据的函数
-void MQTT_send_temperature(int temp_value)
-{
-    if (pub_obj == NULL)
-    {
-        printf("MQTT发布客户端未初始化！\n");
-        return;
-    }
-
-    char buf[100] = {0};
-    sprintf(buf, "热水器温度:%d", temp_value);
-
-    // 发布消息到heater_temp主题
-    int ret = mosquitto_publish(pub_obj, NULL, "heater_temp", strlen(buf), buf, 0, false);
-    if (ret == MOSQ_ERR_SUCCESS)
-    {
-        printf("发送加热器温度: %d°C\n", temp_value);
-    }
-    else
-    {
-        printf("发送加热器温度失败！\n");
     }
 }
 

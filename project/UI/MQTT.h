@@ -7,12 +7,11 @@
 #include <mosquitto.h>
 #include <pthread.h>
 #include "cJSON.h"
+#include "screens/ui_Screen1.h"
+#include "ui_events.h"
 
 void on_message(struct mosquitto *obj, void *arg, const struct mosquitto_message *msg);
 
 int MQTT_init();
 
 int MQTT_push();
-
-// 发送温度数据的函数
-void MQTT_send_temperature(int temp_value);
