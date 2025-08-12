@@ -267,7 +267,7 @@ void ui_event_curtainOffImg2(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        (e);
+        curtainAllOff(e, ui_curtainOnImg2, ui_curtainOffImg2);
     }
 }
 
@@ -414,7 +414,20 @@ void ui_Screen3_screen_init(void)
     lv_obj_set_style_border_side(ui_weather2, LV_BORDER_SIDE_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_weatherIcon2 = lv_image_create(ui_weather2);
-    lv_image_set_src(ui_weatherIcon2, &ui_img_sun_png);
+    if (strcmp(weather_str, "晴") == 0)
+        lv_image_set_src(ui_weatherIcon2, &ui_img_sun_png);
+    else if (strcmp(weather_str, "小雨") == 0)
+        lv_image_set_src(ui_weatherIcon2, &light_rain);
+    else if (strcmp(weather_str, "中雨") == 0)
+        lv_image_set_src(ui_weatherIcon2, &mid_rain);
+    else if (strcmp(weather_str, "大雨") == 0)
+        lv_image_set_src(ui_weatherIcon2, &heavy_rain);
+    else if (strcmp(weather_str, "多云") == 0)
+        lv_image_set_src(ui_weatherIcon2, &cloudy);
+    else if (strcmp(weather_str, "阴") == 0)
+        lv_image_set_src(ui_weatherIcon2, &cloud);
+    else if (strcmp(weather_str, "雾") == 0)
+        lv_image_set_src(ui_weatherIcon2, &fog);
     lv_obj_set_width(ui_weatherIcon2, LV_SIZE_CONTENT);  /// 1
     lv_obj_set_height(ui_weatherIcon2, LV_SIZE_CONTENT); /// 1
     lv_obj_set_x(ui_weatherIcon2, 2);
@@ -427,7 +440,9 @@ void ui_Screen3_screen_init(void)
     lv_obj_set_width(ui_temperature4, LV_SIZE_CONTENT);  /// 1
     lv_obj_set_height(ui_temperature4, LV_SIZE_CONTENT); /// 1
     lv_obj_set_align(ui_temperature4, LV_ALIGN_RIGHT_MID);
-    lv_label_set_text(ui_temperature4, "23°C");
+    char temp_display[32];
+    snprintf(temp_display, sizeof(temp_display), "%s°C", temp_str);
+    lv_label_set_text(ui_temperature4, temp_display);
     lv_obj_set_style_text_color(ui_temperature4, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_temperature4, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_temperature4, &lv_font_montserrat_16, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -807,7 +822,7 @@ void ui_Screen3_screen_init(void)
     lv_obj_set_width(ui_weatherTemperature2, LV_SIZE_CONTENT);  /// 1
     lv_obj_set_height(ui_weatherTemperature2, LV_SIZE_CONTENT); /// 1
     lv_obj_set_align(ui_weatherTemperature2, LV_ALIGN_BOTTOM_MID);
-    lv_label_set_text(ui_weatherTemperature2, "23°C");
+    lv_label_set_text(ui_weatherTemperature2, temp_display);
     lv_obj_set_style_text_color(ui_weatherTemperature2, lv_color_hex(0xA1A2A6), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_weatherTemperature2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_weatherTemperature2, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -818,13 +833,26 @@ void ui_Screen3_screen_init(void)
     lv_obj_set_x(ui_weatherState2, 15);
     lv_obj_set_y(ui_weatherState2, 0);
     lv_obj_set_align(ui_weatherState2, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_weatherState2, "晴");
+    lv_label_set_text(ui_weatherState2, weather_str);
     lv_obj_set_style_text_color(ui_weatherState2, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_weatherState2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_weatherState2, &ui_font_Font18, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_weatherImg2 = lv_image_create(ui_weatherInfo2);
-    lv_image_set_src(ui_weatherImg2, &ui_img_sun_png);
+    if (strcmp(weather_str, "晴") == 0)
+        lv_image_set_src(ui_weatherImg2, &ui_img_sun_png);
+    else if (strcmp(weather_str, "小雨") == 0)
+        lv_image_set_src(ui_weatherImg2, &light_rain);
+    else if (strcmp(weather_str, "中雨") == 0)
+        lv_image_set_src(ui_weatherImg2, &mid_rain);
+    else if (strcmp(weather_str, "大雨") == 0)
+        lv_image_set_src(ui_weatherImg2, &heavy_rain);
+    else if (strcmp(weather_str, "多云") == 0)
+        lv_image_set_src(ui_weatherImg2, &cloudy);
+    else if (strcmp(weather_str, "阴") == 0)
+        lv_image_set_src(ui_weatherImg2, &cloud);
+    else if (strcmp(weather_str, "雾") == 0)
+        lv_image_set_src(ui_weatherImg2, &fog);
     lv_obj_set_width(ui_weatherImg2, LV_SIZE_CONTENT);  /// 1
     lv_obj_set_height(ui_weatherImg2, LV_SIZE_CONTENT); /// 1
     lv_obj_set_x(ui_weatherImg2, -15);
@@ -889,7 +917,7 @@ void ui_Screen3_screen_init(void)
     lv_obj_set_style_border_side(ui_playControl2, LV_BORDER_SIDE_NONE, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_play2 = lv_image_create(ui_playControl2);
-    lv_image_set_src(ui_play2, &ui_img_pause_png);
+    lv_image_set_src(ui_play2, &play);
     lv_obj_set_width(ui_play2, LV_SIZE_CONTENT);  /// 1
     lv_obj_set_height(ui_play2, LV_SIZE_CONTENT); /// 1
     lv_obj_set_align(ui_play2, LV_ALIGN_CENTER);
