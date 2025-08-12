@@ -89,6 +89,15 @@ lv_obj_t *ui_curtainOffImg1 = NULL;
 lv_obj_t *ui_curtainOffText1 = NULL;
 
 // event funtions
+void ui_event_airOnOffText1(lv_event_t *e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    if (event_code == LV_EVENT_CLICKED)
+    {
+        airOnOffText(e, ui_airTemperature1, ui_temperatureText1);
+    }
+}
+
 void ui_event_ChangeRoom1(lv_event_t *e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
@@ -985,6 +994,7 @@ void ui_Screen2_screen_init(void)
     lv_obj_set_style_text_color(ui_temperatureText1, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_temperatureText1, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_temperatureText1, &lv_font_montserrat_28, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_add_flag(ui_temperatureText1, LV_OBJ_FLAG_CLICKABLE); /// 使标签可点击
 
     ui_footerLeft1 = lv_obj_create(ui_footer1);
     lv_obj_set_width(ui_footerLeft1, 200);
@@ -1142,6 +1152,7 @@ void ui_Screen2_screen_init(void)
     lv_obj_add_event_cb(ui_lightOffImg1, ui_event_lightOffImg1, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_curtainOnImg1, ui_event_curtainOnImg1, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_curtainOffImg1, ui_event_curtainOffImg1, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_temperatureText1, ui_event_airOnOffText1, LV_EVENT_ALL, NULL);
 
     // 注册时间和日期标签到时间管理器
     ui_time_manager_register_labels(ui_Time1, ui_Date1);

@@ -22,6 +22,8 @@ extern "C"
     extern lv_obj_t *ui_roomCut2;
     extern lv_obj_t *ui_roomImg2;
     extern lv_obj_t *ui_ChangeRoom2;
+
+    extern void ui_event_airOnOffText2(lv_event_t *e);
     extern void ui_event_ChangeRoom2(lv_event_t *e);
     extern lv_obj_t *ui_currentTime2;
     extern lv_obj_t *ui_Time2;

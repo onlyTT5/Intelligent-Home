@@ -6,6 +6,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "./UI/ui.h"
+// 添加MQTT库头文件
+#include <mosquitto.h>
+#include <pthread.h>
+#include "./UI/MQTT.h"
+
+void *lv_event_MQTT(void *arg)
+{
+    MQTT_init();
+    return NULL;
+}
+
+void *lv_event_MQTT_push(void *arg)
+{
+    MQTT_push();
+    return NULL;
+}
 
 static const char *getenv_default(const char *name, const char *dflt)
 {
@@ -53,6 +69,12 @@ int main(void)
     lv_evdev_set_calibration(touch, 0, 0, 800, 480); // 蓝色边框的屏幕
 #endif
     ui_init();
+
+    pthread_t tid1;
+    pthread_create(&tid1, NULL, lv_event_MQTT, NULL);
+
+    pthread_t tid2;
+    pthread_create(&tid2, NULL, lv_event_MQTT_push, NULL);
 
     // lv_example_event_1(); // 测试按钮例子
     // lv_example_freetype_1();

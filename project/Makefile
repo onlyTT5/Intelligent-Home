@@ -14,7 +14,7 @@ LVGL_DIR 		?= .
 
 CFLAGS 			?= -O3 -g0 -I$(LVGL_DIR) -I/usr/include/freetype2/
 
-LDFLAGS 		?= -lm -lSDL2 -L/usr/local/lib -lfreetype
+LDFLAGS 		?= -lm -lSDL2 -L/usr/local/lib -lfreetype -lmosquitto
 # LDFLAGS 		?= -lm -L/usr/local/lib -freetype
 
 BIN 			= main

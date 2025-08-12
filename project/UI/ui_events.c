@@ -62,7 +62,7 @@ void *playMusic(void *arg)
 }
 
 // 点击切换空调状态
-void airOnOffText(lv_event_t *e)
+void airOnOffText(lv_event_t *e, lv_obj_t *ui_airTemperature, lv_obj_t *ui_temperatureText)
 {
 	lv_event_code_t event_code = lv_event_get_code(e);
 	static int airOn = 1; // 0表示关闭，1表示开启
@@ -72,8 +72,8 @@ void airOnOffText(lv_event_t *e)
 		if (airOn == 0)
 		{
 			airOn = 1; // 切换到开启状态
-			lv_label_set_text(ui_temperatureText, "26°C");
-			lv_label_set_text(ui_airTemperature, "26°C");
+			lv_label_set_text(ui_temperatureText, "20°C");
+			lv_label_set_text(ui_airTemperature, "20°C");
 		}
 		else
 		{
