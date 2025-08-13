@@ -63,7 +63,7 @@ void *playMusic(void *arg)
 }
 
 // 点击切换空调状态
-void airOnOffText(lv_event_t *e, lv_obj_t *ui_airTemperature, lv_obj_t *ui_temperatureText)
+void airOnOffText(lv_event_t *e, lv_obj_t *air_temp_obj, lv_obj_t *ui_temperatureText)
 {
 	lv_event_code_t event_code = LV_EVENT_CLICKED; // 默认为点击事件
 	static int airOn = 1;						   // 0表示关闭，1表示开启
@@ -80,13 +80,37 @@ void airOnOffText(lv_event_t *e, lv_obj_t *ui_airTemperature, lv_obj_t *ui_tempe
 		{
 			airOn = 1; // 切换到开启状态
 			lv_label_set_text(ui_temperatureText, "20°C");
-			lv_label_set_text(ui_airTemperature, "20°C");
+			lv_label_set_text(air_temp_obj, "20°C");
 		}
 		else
 		{
 			airOn = 0; // 切换到关闭状态
 			lv_label_set_text(ui_temperatureText, "Start");
-			lv_label_set_text(ui_airTemperature, "Start");
+			lv_label_set_text(air_temp_obj, "Start");
+		}
+
+		// 发送MQTT消息：空调开关状态变化
+		// 根据传入的air_temp_obj对象判断是哪个房间
+		extern lv_obj_t *ui_airTemperature;	 // Screen1声明
+		extern lv_obj_t *ui_airTemperature1; // Screen2声明
+		extern lv_obj_t *ui_airTemperature2; // Screen3声明
+
+		// 需要用不同的变量名来避免参数名冲突
+		lv_obj_t *screen1_air_obj = ui_airTemperature;	// Screen1的空调温度对象
+		lv_obj_t *screen2_air_obj = ui_airTemperature1; // Screen2的空调温度对象
+		lv_obj_t *screen3_air_obj = ui_airTemperature2; // Screen3的空调温度对象
+
+		if (air_temp_obj == screen1_air_obj) // 参数与Screen1全局变量比较
+		{
+			MQTT_send_device_control("Living Room", "air", airOn ? "on" : "off");
+		}
+		else if (air_temp_obj == screen2_air_obj) // 参数与Screen2全局变量比较
+		{
+			MQTT_send_device_control("Room 1", "air", airOn ? "on" : "off");
+		}
+		else if (air_temp_obj == screen3_air_obj) // 参数与Screen3全局变量比较
+		{
+			MQTT_send_device_control("Room 2", "air", airOn ? "on" : "off");
 		}
 	}
 }
@@ -321,26 +345,31 @@ void decreaseTemp(lv_event_t *e, lv_obj_t *ui_airTemperature, lv_obj_t *ui_tempe
 	{
 		event_code = lv_event_get_code(e);
 	}
-	// 获取温度标签文本
-	char *buf = lv_label_get_text(ui_airTemperature);
-	char *degree_sign = strstr(buf, "°C");
-	// 转换为整数
-	int temp = atoi(buf);
-	if (temp > 16) // 假设温度范围为16°C到30°C
-		temp -= 1;
 
 	if (event_code == LV_EVENT_CLICKED)
 	{
-		// 设置新的温度文本
-		char new_temp[10];
-		sprintf(new_temp, "%d", temp);
-		lv_label_set_text(ui_airTemperature, new_temp);
-		if (degree_sign)
+		// 获取温度标签文本
+		char *buf = lv_label_get_text(ui_airTemperature);
+		int temp;
+
+		// 检查是否是"Start"状态，如果是则初始化为20°C
+		if (strstr(buf, "Start") != NULL)
 		{
-			lv_label_set_text(ui_airTemperature, strcat(new_temp, "°C"));
-			lv_label_set_text(ui_temperatureText, new_temp);
-			// ui_temperatureText
+			temp = 20;
 		}
+		else
+		{
+			// 转换为整数
+			temp = atoi(buf);
+			if (temp > 16) // 假设温度范围为16°C到30°C
+				temp -= 1;
+		}
+
+		// 设置新的温度文本
+		char new_temp[20];
+		sprintf(new_temp, "%d°C", temp);
+		lv_label_set_text(ui_airTemperature, new_temp);
+		lv_label_set_text(ui_temperatureText, new_temp);
 
 		// 发送MQTT消息：空调温度变化
 		// 根据传入的ui_airTemperature对象判断是哪个房间
@@ -375,25 +404,31 @@ void increaseTemp(lv_event_t *e, lv_obj_t *ui_airTemperature, lv_obj_t *ui_tempe
 	{
 		event_code = lv_event_get_code(e);
 	}
-	// 获取温度标签文本
-	char *buf = lv_label_get_text(ui_airTemperature);
-	char *degree_sign = strstr(buf, "°C");
-	// 转换为整数
-	int temp = atoi(buf);
-	if (temp < 30)
-		temp += 1;
 
 	if (event_code == LV_EVENT_CLICKED)
 	{
-		// 设置新的温度文本
-		char new_temp[10];
-		sprintf(new_temp, "%d", temp);
-		lv_label_set_text(ui_airTemperature, new_temp);
-		if (degree_sign)
+		// 获取温度标签文本
+		char *buf = lv_label_get_text(ui_airTemperature);
+		int temp;
+
+		// 检查是否是"Start"状态，如果是则初始化为20°C
+		if (strstr(buf, "Start") != NULL)
 		{
-			lv_label_set_text(ui_airTemperature, strcat(new_temp, "°C"));
-			lv_label_set_text(ui_temperatureText, new_temp);
+			temp = 20;
 		}
+		else
+		{
+			// 转换为整数
+			temp = atoi(buf);
+			if (temp < 30)
+				temp += 1;
+		}
+
+		// 设置新的温度文本
+		char new_temp[20];
+		sprintf(new_temp, "%d°C", temp);
+		lv_label_set_text(ui_airTemperature, new_temp);
+		lv_label_set_text(ui_temperatureText, new_temp);
 
 		// 发送MQTT消息：空调温度变化
 		// 根据传入的ui_airTemperature对象判断是哪个房间

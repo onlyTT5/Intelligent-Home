@@ -258,6 +258,16 @@ void ui_event_temperatureText2(lv_event_t *e)
     }
 }
 
+void ui_event_airTemperature2(lv_event_t *e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if (event_code == LV_EVENT_CLICKED)
+    {
+        airOnOffText(e, ui_airTemperature2, ui_temperatureText2);
+    }
+}
+
 void ui_event_lightOnImg2(lv_event_t *e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
@@ -822,6 +832,7 @@ void ui_Screen3_screen_init(void)
     lv_obj_set_y(ui_airTemperature2, -5);
     lv_obj_set_align(ui_airTemperature2, LV_ALIGN_CENTER);
     lv_label_set_text(ui_airTemperature2, "26°C");
+    lv_obj_add_flag(ui_airTemperature2, LV_OBJ_FLAG_CLICKABLE); /// 让标签可点击
     lv_obj_set_style_text_color(ui_airTemperature2, lv_color_hex(0xA1A2A6), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_airTemperature2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_airTemperature2, &lv_font_montserrat_24, LV_PART_MAIN | LV_STATE_DEFAULT);
@@ -1174,6 +1185,7 @@ void ui_Screen3_screen_init(void)
     lv_obj_add_event_cb(ui_next2, ui_event_next2, LV_EVENT_CLICKED, NULL);
     lv_obj_add_event_cb(ui_lower2, ui_event_lower2, LV_EVENT_CLICKED, NULL);
     lv_obj_add_event_cb(ui_increase2, ui_event_increase2, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(ui_airTemperature2, ui_event_airTemperature2, LV_EVENT_CLICKED, NULL);
     lv_obj_add_event_cb(ui_temperatureText2, ui_event_temperatureText2, LV_EVENT_CLICKED, NULL);
     lv_obj_add_event_cb(ui_lightOnImg2, ui_event_lightOnImg2, LV_EVENT_CLICKED, NULL);
     lv_obj_add_event_cb(ui_lightOffImg2, ui_event_lightOffImg2, LV_EVENT_CLICKED, NULL);
