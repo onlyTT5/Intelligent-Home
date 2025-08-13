@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "./UI/ui.h"
+#include "./UI/screens/MQTT.h"
 // 添加MQTT库头文件
 #include <mosquitto.h>
 #include <pthread.h>
