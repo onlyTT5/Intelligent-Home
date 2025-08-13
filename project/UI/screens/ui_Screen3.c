@@ -175,7 +175,14 @@ void ui_event_lightSlider2(lv_event_t *e)
 
     if (event_code == LV_EVENT_VALUE_CHANGED)
     {
+        // 更新显示的百分比文本
         _ui_slider_set_text_value(ui_lightSliderValue2, target, "", "%");
+
+        // 获取滑块当前值（0-100）
+        int brightness = lv_slider_get_value(target);
+
+        // 发送MQTT消息：次卧灯光亮度变化
+        MQTT_send_light_brightness("Room 2", brightness);
     }
 }
 
@@ -1143,26 +1150,25 @@ void ui_Screen3_screen_init(void)
     lv_obj_set_style_text_opa(ui_curtainOffText2, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_font(ui_curtainOffText2, &ui_font_font16, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    lv_obj_add_event_cb(ui_goHome2, ui_event_goHome2, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_gobed2, ui_event_gobed2, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_relex2, ui_event_relex2, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_getUp2, ui_event_getUp2, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_cinema2, ui_event_cinema2, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_goOut2, ui_event_goOut2, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_ChangeRoom2, ui_event_ChangeRoom2, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_lightSlider2, ui_event_lightSlider2, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_play2, ui_event_play2, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_last2, ui_event_last2, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_next2, ui_event_next2, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_lower2, ui_event_lower2, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_increase2, ui_event_increase2, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_temperatureText2, ui_event_temperatureText2, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_lightOnImg2, ui_event_lightOnImg2, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_lightOffImg2, ui_event_lightOffImg2, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_curtainOnImg2, ui_event_curtainOnImg2, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_curtainOffImg2, ui_event_curtainOffImg2, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_temperatureText2, ui_event_airOnOffText2, LV_EVENT_ALL, NULL);
-
+    lv_obj_add_event_cb(ui_goHome2, ui_event_goHome2, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(ui_gobed2, ui_event_gobed2, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(ui_relex2, ui_event_relex2, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(ui_getUp2, ui_event_getUp2, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(ui_cinema2, ui_event_cinema2, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(ui_goOut2, ui_event_goOut2, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(ui_ChangeRoom2, ui_event_ChangeRoom2, LV_EVENT_VALUE_CHANGED, NULL);
+    lv_obj_add_event_cb(ui_lightSlider2, ui_event_lightSlider2, LV_EVENT_VALUE_CHANGED, NULL);
+    lv_obj_add_event_cb(ui_play2, ui_event_play2, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(ui_last2, ui_event_last2, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(ui_next2, ui_event_next2, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(ui_lower2, ui_event_lower2, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(ui_increase2, ui_event_increase2, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(ui_temperatureText2, ui_event_temperatureText2, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(ui_lightOnImg2, ui_event_lightOnImg2, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(ui_lightOffImg2, ui_event_lightOffImg2, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(ui_curtainOnImg2, ui_event_curtainOnImg2, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(ui_curtainOffImg2, ui_event_curtainOffImg2, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(ui_temperatureText2, ui_event_airOnOffText2, LV_EVENT_CLICKED, NULL);
 
     // 注册时间和日期标签到时间管理器
     ui_time_manager_register_labels(ui_Time2, ui_Date2);

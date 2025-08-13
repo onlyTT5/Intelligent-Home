@@ -58,6 +58,42 @@ void control_light(lv_obj_t *light_obj, lv_obj_t *slider_obj, lv_obj_t *value_ob
     }
 }
 
+// 控制灯光亮度的函数
+void control_light_brightness(lv_obj_t *light_obj, lv_obj_t *slider_obj, lv_obj_t *value_obj, int brightness)
+{
+    if (brightness < 0)
+        brightness = 0;
+    if (brightness > 100)
+        brightness = 100;
+
+    // 更新滑块值
+    if (slider_obj)
+    {
+        lv_slider_set_value(slider_obj, brightness, LV_ANIM_OFF);
+    }
+
+    // 更新显示的百分比文本
+    if (value_obj)
+    {
+        char brightness_str[10];
+        snprintf(brightness_str, sizeof(brightness_str), "%d%%", brightness);
+        lv_label_set_text(value_obj, brightness_str);
+    }
+
+    // 根据亮度设置灯光图标
+    if (light_obj)
+    {
+        if (brightness > 0)
+        {
+            lv_image_set_src(light_obj, &ui_img_light_on_png);
+        }
+        else
+        {
+            lv_image_set_src(light_obj, &ui_img_light_off_png);
+        }
+    }
+}
+
 void control_curtain(lv_obj_t *curtain_obj, const char *state)
 {
     if (curtain_obj == NULL)
@@ -152,6 +188,15 @@ void control_room_devices(const char *room_name, cJSON *room_obj)
     {
         control_light(light_obj, slider_obj, value_obj, light->valuestring);
         printf("房间 %s：灯光设置为 %s\n", room_name, light->valuestring);
+    }
+
+    // 控制灯光亮度
+    cJSON *light_brightness = cJSON_GetObjectItem(room_obj, "light_brightness");
+    if (light_brightness && cJSON_IsNumber(light_brightness))
+    {
+        int brightness = (int)cJSON_GetNumberValue(light_brightness);
+        control_light_brightness(light_obj, slider_obj, value_obj, brightness);
+        printf("房间 %s：灯光亮度设置为 %d%%\n", room_name, brightness);
     }
 
     cJSON *curtain = cJSON_GetObjectItem(room_obj, "curtain");

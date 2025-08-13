@@ -177,7 +177,14 @@ void ui_event_lightSlider(lv_event_t *e)
 
     if (event_code == LV_EVENT_VALUE_CHANGED)
     {
+        // 更新显示的百分比文本
         _ui_slider_set_text_value(ui_lightSliderValue, target, "", "%");
+
+        // 获取滑块当前值（0-100）
+        int brightness = lv_slider_get_value(target);
+
+        // 发送MQTT消息：客厅灯光亮度变化
+        MQTT_send_light_brightness("Living Room", brightness);
     }
 }
 
@@ -1156,19 +1163,19 @@ void ui_Screen1_screen_init(void)
     lv_obj_add_event_cb(ui_cinema, ui_event_cinema, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_goOut, ui_event_goOut, LV_EVENT_ALL, NULL);
     // 添加屏幕跳转的事件回调
-    lv_obj_add_event_cb(ui_ChangeRoom, ui_event_ChangeRoom, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_lightSlider, ui_event_lightSlider, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_play, ui_event_play, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_last, ui_event_last, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_next, ui_event_next, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_lower, ui_event_lower, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_increase, ui_event_increase, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_temperatureText, ui_event_temperatureText, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_lightOnImg, ui_event_lightOnImg, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_lightOffImg, ui_event_lightOffImg, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_curtainOnImg, ui_event_curtainOnImg, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_curtainOffImg, ui_event_curtainOffImg, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_temperatureText, ui_event_airOnOffText, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_ChangeRoom, ui_event_ChangeRoom, LV_EVENT_VALUE_CHANGED, NULL);
+    lv_obj_add_event_cb(ui_lightSlider, ui_event_lightSlider, LV_EVENT_VALUE_CHANGED, NULL);
+    lv_obj_add_event_cb(ui_play, ui_event_play, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(ui_last, ui_event_last, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(ui_next, ui_event_next, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(ui_lower, ui_event_lower, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(ui_increase, ui_event_increase, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(ui_temperatureText, ui_event_temperatureText, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(ui_lightOnImg, ui_event_lightOnImg, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(ui_lightOffImg, ui_event_lightOffImg, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(ui_curtainOnImg, ui_event_curtainOnImg, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(ui_curtainOffImg, ui_event_curtainOffImg, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(ui_temperatureText, ui_event_airOnOffText, LV_EVENT_CLICKED, NULL);
 
     // 注册时间和日期标签到时间管理器
     ui_time_manager_register_labels(ui_Time, ui_Date);

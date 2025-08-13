@@ -15,6 +15,9 @@ void on_message(struct mosquitto *obj, void *arg, const struct mosquitto_message
 // MQTT发送设备控制消息函数
 void MQTT_send_device_control(const char *room, const char *device, const char *action);
 
+// MQTT发送灯光亮度百分比消息函数
+void MQTT_send_light_brightness(const char *room, int brightness);
+
 int MQTT_init();
 
 int MQTT_push();

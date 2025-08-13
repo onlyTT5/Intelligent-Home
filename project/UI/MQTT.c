@@ -311,6 +311,45 @@ void MQTT_send_device_control(const char *room, const char *device, const char *
     cJSON_Delete(json);
 }
 
+// MQTT发送灯光亮度百分比消息函数
+void MQTT_send_light_brightness(const char *room, int brightness)
+{
+    if (pub_obj == NULL)
+    {
+        printf("MQTT发布客户端未初始化！\n");
+        return;
+    }
+
+    // 构造JSON消息，包含亮度百分比
+    cJSON *json = cJSON_CreateObject();
+    cJSON *room_obj = cJSON_CreateObject();
+
+    // 将亮度作为数字添加到JSON中
+    cJSON_AddNumberToObject(room_obj, "light_brightness", brightness);
+    cJSON_AddItemToObject(json, room, room_obj);
+
+    char *json_string = cJSON_Print(json);
+    if (json_string != NULL)
+    {
+        printf("发送MQTT灯光亮度消息: %s\n", json_string);
+
+        // 发布消息到IntelligentHome主题
+        int ret = mosquitto_publish(pub_obj, NULL, "IntelligentHome", strlen(json_string), json_string, 0, false);
+        if (ret != MOSQ_ERR_SUCCESS)
+        {
+            printf("发送MQTT灯光亮度消息失败，错误代码: %d\n", ret);
+        }
+        else
+        {
+            printf("MQTT灯光亮度消息发送成功！亮度: %d%%\n", brightness);
+        }
+
+        free(json_string);
+    }
+
+    cJSON_Delete(json);
+}
+
 void on_message(struct mosquitto *obj, void *arg, const struct mosquitto_message *msg)
 {
     char buf[1024] = {0};
@@ -325,6 +364,7 @@ void on_message(struct mosquitto *obj, void *arg, const struct mosquitto_message
         printf("找到客厅\n");
 
         cJSON *Living_Room_light = cJSON_GetObjectItem(Living_Room_obj, "light");
+        cJSON *Living_Room_light_brightness = cJSON_GetObjectItem(Living_Room_obj, "light_brightness");
         cJSON *Living_Room_curtain = cJSON_GetObjectItem(Living_Room_obj, "curtain");
         cJSON *Living_Room_music = cJSON_GetObjectItem(Living_Room_obj, "music");
         cJSON *Living_Room_air = cJSON_GetObjectItem(Living_Room_obj, "air");
@@ -340,6 +380,16 @@ void on_message(struct mosquitto *obj, void *arg, const struct mosquitto_message
             printf("设置灯光动作: %s\n", light);
             strncpy(g_mqtt_data.light1_action, light, sizeof(g_mqtt_data.light1_action) - 1);
             g_mqtt_data.need_update = 1;
+        }
+
+        // 处理灯光亮度
+        if (Living_Room_light_brightness != NULL && cJSON_IsNumber(Living_Room_light_brightness))
+        {
+            int brightness = (int)cJSON_GetNumberValue(Living_Room_light_brightness);
+            printf("收到客厅灯光亮度设置: %d%%\n", brightness);
+
+            // 这里可以添加设置滑块值的逻辑
+            // 但需要在UI线程中安全执行，暂时只打印日志
         }
 
         if (curtain != NULL)
