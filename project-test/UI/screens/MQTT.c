@@ -158,6 +158,19 @@ void control_air(lv_obj_t *air_text_obj, const char *state)
     }
 }
 
+void control_air_temperature(lv_obj_t *air_text_obj, int temperature)
+{
+    if (air_text_obj == NULL)
+        return;
+
+    // 格式化温度显示文本
+    char temp_str[10];
+    snprintf(temp_str, sizeof(temp_str), "%d°C", temperature);
+    lv_label_set_text(air_text_obj, temp_str);
+
+    printf("设置空调温度显示: %s\n", temp_str);
+}
+
 // 处理单个房间的设备控制
 void control_room_devices(const char *room_name, cJSON *room_obj)
 {
@@ -229,6 +242,15 @@ void control_room_devices(const char *room_name, cJSON *room_obj)
     {
         control_air(air_text_obj, air->valuestring);
         printf("房间 %s：空调设置为 %s\n", room_name, air->valuestring);
+    }
+
+    // 控制空调温度
+    cJSON *air_temperature = cJSON_GetObjectItem(room_obj, "air_temperature");
+    if (air_temperature && cJSON_IsNumber(air_temperature))
+    {
+        int temperature = (int)cJSON_GetNumberValue(air_temperature);
+        control_air_temperature(air_text_obj, temperature);
+        printf("房间 %s：空调温度设置为 %d°C\n", room_name, temperature);
     }
 }
 

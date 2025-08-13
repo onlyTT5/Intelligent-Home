@@ -5,6 +5,7 @@
 
 #include "ui_events.h"
 #include "ui.h"
+#include "MQTT.h"
 
 // 音乐结构体
 struct music
@@ -340,6 +341,30 @@ void decreaseTemp(lv_event_t *e, lv_obj_t *ui_airTemperature, lv_obj_t *ui_tempe
 			lv_label_set_text(ui_temperatureText, new_temp);
 			// ui_temperatureText
 		}
+
+		// 发送MQTT消息：空调温度变化
+		// 根据传入的ui_airTemperature对象判断是哪个房间
+		extern lv_obj_t *ui_airTemperature;	 // Screen1声明
+		extern lv_obj_t *ui_airTemperature1; // Screen2声明
+		extern lv_obj_t *ui_airTemperature2; // Screen3声明
+
+		// 需要用不同的变量名来避免参数名冲突
+		lv_obj_t *screen1_air_obj = ui_airTemperature;	// Screen1的空调温度对象
+		lv_obj_t *screen2_air_obj = ui_airTemperature1; // Screen2的空调温度对象
+		lv_obj_t *screen3_air_obj = ui_airTemperature2; // Screen3的空调温度对象
+
+		if (ui_airTemperature == screen1_air_obj) // 参数与Screen1全局变量比较
+		{
+			MQTT_send_air_temperature("Living Room", temp);
+		}
+		else if (ui_airTemperature == screen2_air_obj) // 参数与Screen2全局变量比较
+		{
+			MQTT_send_air_temperature("Room 1", temp);
+		}
+		else if (ui_airTemperature == screen3_air_obj) // 参数与Screen3全局变量比较
+		{
+			MQTT_send_air_temperature("Room 2", temp);
+		}
 	}
 }
 
@@ -368,6 +393,30 @@ void increaseTemp(lv_event_t *e, lv_obj_t *ui_airTemperature, lv_obj_t *ui_tempe
 		{
 			lv_label_set_text(ui_airTemperature, strcat(new_temp, "°C"));
 			lv_label_set_text(ui_temperatureText, new_temp);
+		}
+
+		// 发送MQTT消息：空调温度变化
+		// 根据传入的ui_airTemperature对象判断是哪个房间
+		extern lv_obj_t *ui_airTemperature;	 // Screen1声明
+		extern lv_obj_t *ui_airTemperature1; // Screen2声明
+		extern lv_obj_t *ui_airTemperature2; // Screen3声明
+
+		// 需要用不同的变量名来避免参数名冲突
+		lv_obj_t *screen1_air_obj = ui_airTemperature;	// Screen1的空调温度对象
+		lv_obj_t *screen2_air_obj = ui_airTemperature1; // Screen2的空调温度对象
+		lv_obj_t *screen3_air_obj = ui_airTemperature2; // Screen3的空调温度对象
+
+		if (ui_airTemperature == screen1_air_obj) // 参数与Screen1全局变量比较
+		{
+			MQTT_send_air_temperature("Living Room", temp);
+		}
+		else if (ui_airTemperature == screen2_air_obj) // 参数与Screen2全局变量比较
+		{
+			MQTT_send_air_temperature("Room 1", temp);
+		}
+		else if (ui_airTemperature == screen3_air_obj) // 参数与Screen3全局变量比较
+		{
+			MQTT_send_air_temperature("Room 2", temp);
 		}
 	}
 }

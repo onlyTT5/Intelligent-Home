@@ -18,6 +18,9 @@ void MQTT_send_device_control(const char *room, const char *device, const char *
 // MQTT发送灯光亮度百分比消息函数
 void MQTT_send_light_brightness(const char *room, int brightness);
 
+// MQTT发送空调温度控制消息函数
+void MQTT_send_air_temperature(const char *room, int temperature);
+
 int MQTT_init();
 
 int MQTT_push();

@@ -350,6 +350,45 @@ void MQTT_send_light_brightness(const char *room, int brightness)
     cJSON_Delete(json);
 }
 
+// MQTT发送空调温度控制消息函数
+void MQTT_send_air_temperature(const char *room, int temperature)
+{
+    if (pub_obj == NULL)
+    {
+        printf("MQTT发布客户端未初始化！\n");
+        return;
+    }
+
+    // 构造JSON消息，包含空调温度
+    cJSON *json = cJSON_CreateObject();
+    cJSON *room_obj = cJSON_CreateObject();
+
+    // 将温度作为数字添加到JSON中
+    cJSON_AddNumberToObject(room_obj, "air_temperature", temperature);
+    cJSON_AddItemToObject(json, room, room_obj);
+
+    char *json_string = cJSON_Print(json);
+    if (json_string != NULL)
+    {
+        printf("发送MQTT空调温度消息: %s\n", json_string);
+
+        // 发布消息到IntelligentHome主题
+        int ret = mosquitto_publish(pub_obj, NULL, "IntelligentHome", strlen(json_string), json_string, 0, false);
+        if (ret != MOSQ_ERR_SUCCESS)
+        {
+            printf("发送MQTT空调温度消息失败，错误代码: %d\n", ret);
+        }
+        else
+        {
+            printf("MQTT空调温度消息发送成功！温度: %d°C\n", temperature);
+        }
+
+        free(json_string);
+    }
+
+    cJSON_Delete(json);
+}
+
 void on_message(struct mosquitto *obj, void *arg, const struct mosquitto_message *msg)
 {
     char buf[1024] = {0};
