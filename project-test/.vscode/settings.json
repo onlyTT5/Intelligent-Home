@@ -1,0 +1,16 @@
+{
+    "files.associations": {
+        "numbers": "c",
+        "ui.h": "c",
+        "ui_events.h": "c",
+        "ui_helpers.h": "c",
+        "lvgl.h": "c",
+        "ui_screen3.h": "c",
+        "ui_screen1.h": "c",
+        "stdio.h": "c",
+        "ui_time_manager.h": "c",
+        "mqtt.h": "c",
+        "stdlib.h": "c"
+    },
+    "C_Cpp.errorSquiggles": "enabledIfIncludesResolve"
+}

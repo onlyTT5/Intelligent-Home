@@ -451,6 +451,21 @@ int MQTT_push()
     {
         printf("连接MQTT服务器成功！\n");
     }
+
+    // 4.启动事件处理
+    mosquitto_loop_start(pub_obj);
+
+    while (1)
+    {
+        sleep(1);
+        int rand = random() % 100; // 快速产生随机数
+
+        char buf[100] = {0};
+        sprintf(buf, "温度: %d\n", rand);
+
+        // 发布消息
+        mosquitto_publish(pub_obj, NULL, "IntelligentHomePus", strlen(buf), buf, 0, false);
+    }
 }
 
 int MQTT_init()
@@ -487,7 +502,7 @@ int MQTT_init()
     }
     else
     {
-        printf("订阅主题成功！\n");
+        printf("订阅主题接受端成功！\n");
     }
 
     // 5.设置消息回调函数 ，当有消息来临时，就会调用该函数
