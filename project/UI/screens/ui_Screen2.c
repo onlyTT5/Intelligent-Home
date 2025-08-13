@@ -247,6 +247,8 @@ void ui_event_lightOnImg1(lv_event_t *e)
     if (event_code == LV_EVENT_CLICKED)
     {
         lightAllOn(e, ui_lightOnImg1, ui_lightOffImg1, ui_lightSliderValue1, ui_lightSlider1);
+        // 发送MQTT消息：房间灯光开启
+        MQTT_send_device_control("Room 1", "light", "on");
     }
 }
 
@@ -257,6 +259,9 @@ void ui_event_lightOffImg1(lv_event_t *e)
     if (event_code == LV_EVENT_CLICKED)
     {
         lightAllOff(e, ui_lightOnImg1, ui_lightOffImg1, ui_lightSliderValue1, ui_lightSlider1);
+
+        // 发送MQTT消息：房间灯光关闭
+        MQTT_send_device_control("Room 1", "light", "off");
     }
 }
 
@@ -267,6 +272,9 @@ void ui_event_curtainOnImg1(lv_event_t *e)
     if (event_code == LV_EVENT_CLICKED)
     {
         curtainAllOn(e, ui_curtainOnImg1, ui_curtainOffImg1);
+
+        // 发送MQTT消息：房间窗帘打开
+        MQTT_send_device_control("Room 1", "curtain", "on");
     }
 }
 
@@ -277,6 +285,9 @@ void ui_event_curtainOffImg1(lv_event_t *e)
     if (event_code == LV_EVENT_CLICKED)
     {
         curtainAllOff(e, ui_curtainOnImg1, ui_curtainOffImg1);
+
+        // 发送MQTT消息：房间窗帘关闭
+        MQTT_send_device_control("Room 1", "curtain", "off");
     }
 }
 

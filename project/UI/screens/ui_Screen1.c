@@ -6,6 +6,7 @@
 #include "../ui.h"
 #include "ui_time_manager.h"
 #include "ui_weather.h"
+#include "../MQTT.h"
 
 lv_obj_t *ui_Screen1 = NULL;
 lv_obj_t *ui_entirety = NULL;
@@ -249,6 +250,8 @@ void ui_event_lightOnImg(lv_event_t *e)
     if (event_code == LV_EVENT_CLICKED)
     {
         lightAllOn(e, ui_lightOnImg, ui_lightOffImg, ui_lightSliderValue, ui_lightSlider);
+        // 发送MQTT消息：客厅灯光开启
+        MQTT_send_device_control("Living Room", "light", "on");
     }
 }
 
@@ -259,6 +262,8 @@ void ui_event_lightOffImg(lv_event_t *e)
     if (event_code == LV_EVENT_CLICKED)
     {
         lightAllOff(e, ui_lightOnImg, ui_lightOffImg, ui_lightSliderValue, ui_lightSlider);
+        // 发送MQTT消息：客厅灯光关闭
+        MQTT_send_device_control("Living Room", "light", "off");
     }
 }
 
@@ -269,6 +274,8 @@ void ui_event_curtainOnImg(lv_event_t *e)
     if (event_code == LV_EVENT_CLICKED)
     {
         curtainAllOn(e, ui_curtainOnImg, ui_curtainOffImg);
+        // 发送MQTT消息：客厅窗帘打开
+        MQTT_send_device_control("Living Room", "curtain", "on");
     }
 }
 
@@ -279,6 +286,8 @@ void ui_event_curtainOffImg(lv_event_t *e)
     if (event_code == LV_EVENT_CLICKED)
     {
         curtainAllOff(e, ui_curtainOnImg, ui_curtainOffImg);
+        // 发送MQTT消息：客厅窗帘关闭
+        MQTT_send_device_control("Living Room", "curtain", "off");
     }
 }
 

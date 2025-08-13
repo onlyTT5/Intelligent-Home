@@ -274,6 +274,43 @@ msg:消息结构体
 
 struct mosquitto *pub_obj = NULL; // 全局发布客户端对象
 
+// MQTT发送设备控制消息函数
+void MQTT_send_device_control(const char *room, const char *device, const char *action)
+{
+    if (pub_obj == NULL)
+    {
+        printf("MQTT发布客户端未初始化！\n");
+        return;
+    }
+
+    // 构造JSON消息
+    cJSON *json = cJSON_CreateObject();
+    cJSON *room_obj = cJSON_CreateObject();
+    cJSON_AddStringToObject(room_obj, device, action);
+    cJSON_AddItemToObject(json, room, room_obj);
+
+    char *json_string = cJSON_Print(json);
+    if (json_string != NULL)
+    {
+        printf("发送MQTT消息: %s\n", json_string);
+
+        // 发布消息到IntelligentHome主题
+        int ret = mosquitto_publish(pub_obj, NULL, "IntelligentHome", strlen(json_string), json_string, 0, false);
+        if (ret != MOSQ_ERR_SUCCESS)
+        {
+            printf("发送MQTT消息失败，错误代码: %d\n", ret);
+        }
+        else
+        {
+            printf("MQTT消息发送成功！\n");
+        }
+
+        free(json_string);
+    }
+
+    cJSON_Delete(json);
+}
+
 void on_message(struct mosquitto *obj, void *arg, const struct mosquitto_message *msg)
 {
     char buf[1024] = {0};
@@ -429,14 +466,14 @@ void on_message(struct mosquitto *obj, void *arg, const struct mosquitto_message
 
 int MQTT_push()
 {
-    // 1.初始化MQTT库
+    // 1.初始化MQTT库（如果还没初始化的话）
     mosquitto_lib_init();
 
     // 2.创建MQTT客户端对象
     pub_obj = mosquitto_new(NULL, true, NULL);
     if (pub_obj == NULL)
     {
-        printf("创建MQTT客户端对象失败！\n");
+        printf("创建MQTT发布客户端对象失败！\n");
         return -1;
     }
 
@@ -444,28 +481,26 @@ int MQTT_push()
     int ret = mosquitto_connect(pub_obj, "120.26.0.201", 1883, 60);
     if (ret != MOSQ_ERR_SUCCESS)
     {
-        printf("连接MQTT服务器失败！\n");
+        printf("MQTT发布客户端连接服务器失败！\n");
         return -1;
     }
     else
     {
-        printf("连接MQTT服务器成功！\n");
+        printf("MQTT发布客户端连接服务器成功！\n");
     }
 
     // 4.启动事件处理
     mosquitto_loop_start(pub_obj);
 
+    printf("MQTT发布客户端初始化成功！\n");
+
+    // 保持线程活跃，处理网络事件
     while (1)
     {
-        sleep(1);
-        int rand = random() % 100; // 快速产生随机数
-
-        char buf[100] = {0};
-        sprintf(buf, "温度: %d\n", rand);
-
-        // 发布消息
-        mosquitto_publish(pub_obj, NULL, "IntelligentHomePus", strlen(buf), buf, 0, false);
+        sleep(10); // 每10秒休眠，降低CPU使用率
     }
+
+    return 0;
 }
 
 int MQTT_init()
