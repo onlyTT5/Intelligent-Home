@@ -5,17 +5,53 @@
 
 #include "ui.h"
 
-void lightSwitch(lv_event_t * e)
+void lightSwitch(lv_event_t *e)
 {
-	// Your code here
+	if (lv_event_get_code(e) == LV_EVENT_CLICKED)
+	{
+		lv_obj_t *target = lv_event_get_target(e);
+		if (lv_image_get_src(target) == &ui_img_light_off_png)
+		{
+			lv_image_set_src(target, &ui_img_light_on_png);
+			lv_slider_set_value(ui_Slider, 50, LV_ANIM_OFF);
+			lv_label_set_text(ui_lightValue, "50%");
+		}
+		else
+		{
+			lv_image_set_src(target, &ui_img_light_off_png);
+			lv_slider_set_value(ui_Slider, 0, LV_ANIM_OFF);
+		}
+	}
 }
 
-void curtainSwitch(lv_event_t * e)
+void curtainSwitch(lv_event_t *e)
 {
-	// Your code here
+	if (lv_event_get_code(e) == LV_EVENT_CLICKED)
+	{
+		lv_obj_t *target = lv_event_get_target(e);
+		if (lv_image_get_src(target) == &ui_img_curtain_off_png)
+		{
+			lv_image_set_src(target, &ui_img_curtain_on_png);
+		}
+		else
+		{
+			lv_image_set_src(target, &ui_img_curtain_off_png);
+		}
+	}
 }
 
-void loudSpeakerSwitch(lv_event_t * e)
+void loudSpeakerSwitch(lv_event_t *e)
 {
-	// Your code here
+	if (lv_event_get_code(e) == LV_EVENT_CLICKED)
+	{
+		lv_obj_t *target = lv_event_get_target(e);
+		if (lv_image_get_src(target) == &ui_img_loudspeaker_off_png)
+		{
+			lv_image_set_src(target, &ui_img_loudspeaker_on_png);
+		}
+		else
+		{
+			lv_image_set_src(target, &ui_img_loudspeaker_off_png);
+		}
+	}
 }

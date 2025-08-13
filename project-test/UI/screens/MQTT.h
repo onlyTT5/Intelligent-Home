@@ -7,3 +7,6 @@
 #include <mosquitto.h>
 #include <pthread.h>
 #include "cJSON.h"
+
+int MQTT_init();
+int MQTT_push();

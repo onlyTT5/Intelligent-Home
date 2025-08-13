@@ -157,7 +157,7 @@ void ui_Screen1_screen_init(void)
     lv_obj_set_style_text_font(ui_Room, &ui_font_Font1, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_Slider = lv_slider_create(ui_Screen1);
-    lv_slider_set_value(ui_Slider, 50, LV_ANIM_OFF);
+    lv_slider_set_value(ui_Slider, 0, LV_ANIM_OFF);
     if(lv_slider_get_mode(ui_Slider) == LV_SLIDER_MODE_RANGE) lv_slider_set_left_value(ui_Slider, 0, LV_ANIM_OFF);
     lv_obj_set_width(ui_Slider, 150);
     lv_obj_set_height(ui_Slider, 10);
@@ -174,7 +174,7 @@ void ui_Screen1_screen_init(void)
     lv_obj_set_x(ui_lightValue, -312);
     lv_obj_set_y(ui_lightValue, 96);
     lv_obj_set_align(ui_lightValue, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_lightValue, "50%");
+    lv_label_set_text(ui_lightValue, "0%");
 
     lv_obj_add_event_cb(ui_light, ui_event_light, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_curtain, ui_event_curtain, LV_EVENT_ALL, NULL);

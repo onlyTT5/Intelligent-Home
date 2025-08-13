@@ -34,6 +34,9 @@ LV_IMG_DECLARE(ui_img_light_off_png);    // assets/light_off.png
 LV_IMG_DECLARE(ui_img_curtain_off_png);    // assets/curtain_off.png
 LV_IMG_DECLARE(ui_img_air_conditioner_png);    // assets/air_conditioner.png
 LV_IMG_DECLARE(ui_img_loudspeaker_off_png);    // assets/loudspeaker_off.png
+LV_IMG_DECLARE(ui_img_light_on_png);    // assets/light_on.png
+LV_IMG_DECLARE(ui_img_curtain_on_png);    // assets/curtain_on.png
+LV_IMG_DECLARE(ui_img_loudspeaker_on_png);    // assets/loudspeaker_on.png
 
 // FONTS
 LV_FONT_DECLARE(ui_font_Font1);
