@@ -116,7 +116,7 @@ void ui_event_goHome(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        controlChange1(e, ui_lightOnImg, ui_lightOffImg, ui_lightSliderValue, ui_lightSlider);
+        controlChange1(e, ui_lightOnImg, ui_lightOffImg, ui_lightSliderValue, ui_lightSlider, "Living Room");
     }
 }
 
@@ -126,7 +126,7 @@ void ui_event_gobed(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        controlChange2(e, ui_lightOnImg, ui_lightOffImg, ui_lightSliderValue, ui_lightSlider);
+        controlChange2(e, ui_lightOnImg, ui_lightOffImg, ui_lightSliderValue, ui_lightSlider, "Living Room");
     }
 }
 
@@ -136,7 +136,7 @@ void ui_event_relex(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        controlChange3(e, ui_lightOnImg, ui_lightOffImg, ui_lightSliderValue, ui_lightSlider);
+        controlChange3(e, ui_lightOnImg, ui_lightOffImg, ui_lightSliderValue, ui_lightSlider, "Living Room");
     }
 }
 
@@ -146,7 +146,7 @@ void ui_event_getUp(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        controlChange4(e, ui_lightOnImg, ui_lightOffImg, ui_lightSliderValue, ui_lightSlider);
+        controlChange4(e, ui_lightOnImg, ui_lightOffImg, ui_lightSliderValue, ui_lightSlider, "Living Room");
     }
 }
 
@@ -156,7 +156,7 @@ void ui_event_cinema(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        controlChange5(e, ui_lightOnImg, ui_lightOffImg, ui_lightSliderValue, ui_lightSlider);
+        controlChange5(e, ui_lightOnImg, ui_lightOffImg, ui_lightSliderValue, ui_lightSlider, "Living Room");
     }
 }
 
@@ -166,7 +166,7 @@ void ui_event_goOut(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        controlChange6(e, ui_lightOnImg, ui_lightOffImg, ui_lightSliderValue, ui_lightSlider);
+        controlChange6(e, ui_lightOnImg, ui_lightOffImg, ui_lightSliderValue, ui_lightSlider, "Living Room");
     }
 }
 

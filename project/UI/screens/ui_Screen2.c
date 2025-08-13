@@ -114,7 +114,7 @@ void ui_event_goHome1(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        controlChange1(e, ui_lightOnImg1, ui_lightOffImg1, ui_lightSliderValue1, ui_lightSlider1);
+        controlChange1(e, ui_lightOnImg1, ui_lightOffImg1, ui_lightSliderValue1, ui_lightSlider1, "Room 1");
     }
 }
 
@@ -124,7 +124,7 @@ void ui_event_gobed1(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        controlChange2(e, ui_lightOnImg1, ui_lightOffImg1, ui_lightSliderValue1, ui_lightSlider1);
+        controlChange2(e, ui_lightOnImg1, ui_lightOffImg1, ui_lightSliderValue1, ui_lightSlider1, "Room 1");
     }
 }
 
@@ -134,7 +134,7 @@ void ui_event_relex1(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        controlChange3(e, ui_lightOnImg1, ui_lightOffImg1, ui_lightSliderValue1, ui_lightSlider1);
+        controlChange3(e, ui_lightOnImg1, ui_lightOffImg1, ui_lightSliderValue1, ui_lightSlider1, "Room 1");
     }
 }
 
@@ -144,7 +144,7 @@ void ui_event_getUp1(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        controlChange4(e, ui_lightOnImg1, ui_lightOffImg1, ui_lightSliderValue1, ui_lightSlider1);
+        controlChange4(e, ui_lightOnImg1, ui_lightOffImg1, ui_lightSliderValue1, ui_lightSlider1, "Room 1");
     }
 }
 
@@ -154,7 +154,7 @@ void ui_event_cinema1(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        controlChange5(e, ui_lightOnImg1, ui_lightOffImg1, ui_lightSliderValue1, ui_lightSlider1);
+        controlChange5(e, ui_lightOnImg1, ui_lightOffImg1, ui_lightSliderValue1, ui_lightSlider1, "Room 1");
     }
 }
 
@@ -164,7 +164,7 @@ void ui_event_goOut1(lv_event_t *e)
 
     if (event_code == LV_EVENT_CLICKED)
     {
-        controlChange6(e, ui_lightOnImg1, ui_lightOffImg1, ui_lightSliderValue1, ui_lightSlider1);
+        controlChange6(e, ui_lightOnImg1, ui_lightOffImg1, ui_lightSliderValue1, ui_lightSlider1, "Room 1");
     }
 }
 

@@ -132,7 +132,7 @@ void airOnOffControl(lv_event_t *e, lv_obj_t *ui_airTemperature, lv_obj_t *ui_te
 	}
 }
 
-void controlChange1(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider)
+void controlChange1(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider, const char *room_name)
 {
 	lv_event_code_t event_code = lv_event_get_code(e);
 	if (event_code == LV_EVENT_CLICKED)
@@ -141,10 +141,16 @@ void controlChange1(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOf
 		lv_image_set_src(ui_lightOffImg, &light_click);
 		lv_label_set_text(ui_lightSliderValue, "0%");
 		lv_slider_set_value(ui_lightSlider, 0, LV_ANIM_OFF);
+
+		// 发送MQTT消息：灯光亮度变化
+		if (room_name != NULL)
+		{
+			MQTT_send_light_brightness(room_name, 0);
+		}
 	}
 }
 
-void controlChange2(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider)
+void controlChange2(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider, const char *room_name)
 {
 	lv_event_code_t event_code = lv_event_get_code(e);
 	if (event_code == LV_EVENT_CLICKED)
@@ -153,10 +159,16 @@ void controlChange2(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOf
 		lv_image_set_src(ui_lightOffImg, &ui_img_light_png);
 		lv_label_set_text(ui_lightSliderValue, "10%");
 		lv_slider_set_value(ui_lightSlider, 10, LV_ANIM_OFF);
+
+		// 发送MQTT消息：灯光亮度变化
+		if (room_name != NULL)
+		{
+			MQTT_send_light_brightness(room_name, 10);
+		}
 	}
 }
 
-void controlChange3(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider)
+void controlChange3(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider, const char *room_name)
 {
 	lv_event_code_t event_code = lv_event_get_code(e);
 	if (event_code == LV_EVENT_CLICKED)
@@ -165,10 +177,16 @@ void controlChange3(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOf
 		lv_image_set_src(ui_lightOffImg, &ui_img_light_png);
 		lv_label_set_text(ui_lightSliderValue, "70%");
 		lv_slider_set_value(ui_lightSlider, 70, LV_ANIM_OFF);
+
+		// 发送MQTT消息：灯光亮度变化
+		if (room_name != NULL)
+		{
+			MQTT_send_light_brightness(room_name, 70);
+		}
 	}
 }
 
-void controlChange4(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider)
+void controlChange4(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider, const char *room_name)
 {
 	lv_event_code_t event_code = lv_event_get_code(e);
 	if (event_code == LV_EVENT_CLICKED)
@@ -177,10 +195,16 @@ void controlChange4(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOf
 		lv_image_set_src(ui_lightOffImg, &ui_img_light_png);
 		lv_label_set_text(ui_lightSliderValue, "10%");
 		lv_slider_set_value(ui_lightSlider, 10, LV_ANIM_OFF);
+
+		// 发送MQTT消息：灯光亮度变化
+		if (room_name != NULL)
+		{
+			MQTT_send_light_brightness(room_name, 10);
+		}
 	}
 }
 
-void controlChange5(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider)
+void controlChange5(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider, const char *room_name)
 {
 	lv_event_code_t event_code = lv_event_get_code(e);
 	if (event_code == LV_EVENT_CLICKED)
@@ -189,10 +213,16 @@ void controlChange5(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOf
 		lv_image_set_src(ui_lightOffImg, &ui_img_light_png);
 		lv_label_set_text(ui_lightSliderValue, "30%");
 		lv_slider_set_value(ui_lightSlider, 30, LV_ANIM_OFF);
+
+		// 发送MQTT消息：灯光亮度变化
+		if (room_name != NULL)
+		{
+			MQTT_send_light_brightness(room_name, 30);
+		}
 	}
 }
 
-void controlChange6(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider)
+void controlChange6(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider, const char *room_name)
 {
 	lv_event_code_t event_code = lv_event_get_code(e);
 	if (event_code == LV_EVENT_CLICKED)
@@ -201,6 +231,12 @@ void controlChange6(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOf
 		lv_image_set_src(ui_lightOffImg, &ui_img_light_png);
 		lv_label_set_text(ui_lightSliderValue, "80%");
 		lv_slider_set_value(ui_lightSlider, 80, LV_ANIM_OFF);
+
+		// 发送MQTT消息：灯光亮度变化
+		if (room_name != NULL)
+		{
+			MQTT_send_light_brightness(room_name, 80);
+		}
 	}
 }
 

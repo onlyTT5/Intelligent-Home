@@ -15,12 +15,12 @@ extern "C"
 
     void airOnOffText(lv_event_t *e, lv_obj_t *air_temp_obj, lv_obj_t *ui_temperatureText);
     void airOnOffControl(lv_event_t *e, lv_obj_t *ui_airTemperature, lv_obj_t *ui_temperatureText, int state);
-    void controlChange1(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider);
-    void controlChange2(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider);
-    void controlChange3(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider);
-    void controlChange4(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider);
-    void controlChange5(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider);
-    void controlChange6(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider);
+    void controlChange1(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider, const char *room_name);
+    void controlChange2(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider, const char *room_name);
+    void controlChange3(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider, const char *room_name);
+    void controlChange4(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider, const char *room_name);
+    void controlChange5(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider, const char *room_name);
+    void controlChange6(lv_event_t *e, lv_obj_t *ui_lightOnImg, lv_obj_t *ui_lightOffImg, lv_obj_t *ui_lightSliderValue, lv_obj_t *ui_lightSlider, const char *room_name);
     void playSong(lv_event_t *e, lv_obj_t *ui_play, lv_obj_t *ui_musicInfo, lv_obj_t *ui_songName, lv_obj_t *ui_singer);
     void prevSong(lv_event_t *e, lv_obj_t *ui_last, lv_obj_t *ui_musicInfo, lv_obj_t *ui_songName, lv_obj_t *ui_singer);
     void nextSong(lv_event_t *e, lv_obj_t *ui_next, lv_obj_t *ui_musicInfo, lv_obj_t *ui_songName, lv_obj_t *ui_singer);
