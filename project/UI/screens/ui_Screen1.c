@@ -170,6 +170,10 @@ void ui_event_goOut(lv_event_t *e)
     }
 }
 
+// 防抖动变量 - Screen1
+static uint32_t last_slider_update_time = 0;
+static int last_slider_value = -1;
+
 void ui_event_lightSlider(lv_event_t *e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
@@ -182,9 +186,16 @@ void ui_event_lightSlider(lv_event_t *e)
 
         // 获取滑块当前值（0-100）
         int brightness = lv_slider_get_value(target);
+        uint32_t current_time = lv_tick_get();
 
-        // 发送MQTT消息：客厅灯光亮度变化
-        MQTT_send_light_brightness("Living Room", brightness);
+        // 防抖动：只有在值改变且距离上次发送超过100ms时才发送MQTT消息
+        if (brightness != last_slider_value && (current_time - last_slider_update_time) > 100)
+        {
+            // 发送MQTT消息：客厅灯光亮度变化
+            MQTT_send_light_brightness("Living Room", brightness);
+            last_slider_update_time = current_time;
+            last_slider_value = brightness;
+        }
     }
 }
 

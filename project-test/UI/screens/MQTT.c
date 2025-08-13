@@ -66,7 +66,18 @@ void control_light_brightness(lv_obj_t *light_obj, lv_obj_t *slider_obj, lv_obj_
     if (brightness > 100)
         brightness = 100;
 
-    // 更新滑块值
+    // 使用防抖动机制，避免在渲染期间更新UI
+    static uint32_t last_update_time = 0;
+    uint32_t current_time = lv_tick_get();
+
+    // 限制UI更新频率，避免渲染冲突
+    if (current_time - last_update_time < 50) // 50ms防抖动
+    {
+        return;
+    }
+    last_update_time = current_time;
+
+    // 更新滑块值 - 使用无动画模式避免渲染冲突
     if (slider_obj)
     {
         lv_slider_set_value(slider_obj, brightness, LV_ANIM_OFF);
