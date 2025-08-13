@@ -163,7 +163,6 @@ void ui_event_cinema(lv_event_t *e)
 void ui_event_goOut(lv_event_t *e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
-
     if (event_code == LV_EVENT_CLICKED)
     {
         controlChange6(e, ui_lightOnImg, ui_lightOffImg, ui_lightSliderValue, ui_lightSlider, "Living Room");
